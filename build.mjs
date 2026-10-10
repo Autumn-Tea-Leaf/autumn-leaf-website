@@ -1,5 +1,6 @@
 // Autumn Leaf: static site generator.
 // Run `node build.mjs` after editing projects below; it writes every .html file.
+// Links use clean URLs (/contact, /work/petali); GitHub Pages serves the matching .html file.
 // No dependencies. Output is plain HTML that GitHub Pages can serve as-is.
 
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
@@ -296,6 +297,8 @@ const PROJECTS = [
 const FEATURED = ["petali", "yoko", "atelier-c", "zukae"];
 
 /* ---------------- helpers ---------------- */
+let onHomePage = false;
+const home = () => (onHomePage ? "" : "/"); // "#work" on the home page, "/#work" elsewhere
 const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 const wh = (src) => (dims[src] ? ` width="${dims[src][0]}" height="${dims[src][1]}"` : "");
 const pad = (n) => String(n).padStart(2, "0");
@@ -340,15 +343,15 @@ function head({ title, desc, base, path, image = "assets/brand/porcelain.webp" }
 
 function header(base, current) {
   const nav = [
-    ["Work", `${base}index.html#work`, "work"],
-    ["About", `${base}index.html#about`, "about"],
-    ["Contact", `${base}contact.html`, "contact"],
+    ["Work", `${home()}#work`, "work"],
+    ["About", `${home()}#about`, "about"],
+    ["Contact", "/contact", "contact"],
   ];
   const roll = (label) => `<span>${label}</span><span aria-hidden="true">${label}</span>`;
   return `
 <a class="label" href="#main" style="position:absolute;left:-9999px">Skip to content</a>
 <header class="header">
-  <a class="header__brand" href="${base}index.html" aria-label="Autumn Leaf home">
+  <a class="header__brand" href="/" aria-label="Autumn Leaf home">
     <span class="header__mark"><img class="mark-dark" src="${base}assets/brand/mark.webp" alt="" width="30" height="39"><img class="mark-light" src="${base}assets/brand/mark-white.webp" alt="" width="30" height="39"></span>
     <span class="header__name">Autumn Leaf<span class="brush">秋叶</span></span>
   </a>
@@ -384,14 +387,14 @@ function footer(base, label = "(05) Contact", onContact = false) {
     <div class="footer__cta">
       <span class="label">${label}</span>
       <h2 class="footer__big" data-lines>Find your peace. Let’s design something calm <span class="brush">静</span></h2>
-      ${onContact ? "" : `<a class="pill pill--light footer__btn" href="${base}contact.html">Start a project <span class="arrow">→</span></a>`}
+      ${onContact ? "" : `<a class="pill pill--light footer__btn" href="/contact">Start a project <span class="arrow">→</span></a>`}
     </div>
     <div class="footer__cols">
       <div class="footer__col">
         <span class="label">Sitemap</span>
-        <a class="link-roll" href="${base}index.html#work"><span>Work</span><span aria-hidden="true">Work</span></a>
-        <a class="link-roll" href="${base}index.html#about"><span>About</span><span aria-hidden="true">About</span></a>
-        <a class="link-roll" href="${base}contact.html"><span>Contact</span><span aria-hidden="true">Contact</span></a>
+        <a class="link-roll" href="${home()}#work"><span>Work</span><span aria-hidden="true">Work</span></a>
+        <a class="link-roll" href="${home()}#about"><span>About</span><span aria-hidden="true">About</span></a>
+        <a class="link-roll" href="/contact"><span>Contact</span><span aria-hidden="true">Contact</span></a>
       </div>
       <div class="footer__col">
         <span class="label">Social</span>
@@ -413,7 +416,7 @@ function footer(base, label = "(05) Contact", onContact = false) {
     <div class="footer__base label">
       <span>© ${new Date().getFullYear()} Autumn Leaf Design Studio</span>
       <span>All work belongs to Andy Ou and credited collaborators</span>
-      <a href="${base}privacy.html" class="link-roll"><span>Privacy</span><span aria-hidden="true">Privacy</span></a>
+      <a href="/privacy" class="link-roll"><span>Privacy</span><span aria-hidden="true">Privacy</span></a>
       <a href="#main" class="link-roll"><span>Back to top ↑</span><span aria-hidden="true">Back to top ↑</span></a>
     </div>
   </div>
@@ -433,7 +436,7 @@ function indexPage() {
     const p = bySlug[s];
     const speeds = ["1", "0.86", "1", "0.9"];
     return `
-      <a class="card" href="work/${p.slug}.html" data-cursor="View" data-speed="${speeds[i]}">
+      <a class="card" href="/work/${p.slug}" data-cursor="View" data-speed="${speeds[i]}">
         <div class="card__frame" data-clip>
           <div class="card__media-scale">${media(p.cover, base, { parallax: 10 })}</div>
         </div>
@@ -454,7 +457,7 @@ function indexPage() {
     .join("\n          ");
 
   const rows = PROJECTS.map((p, i) => `
-          <a class="row" href="work/${p.slug}.html" data-cat="${p.cats.join(" ")}">
+          <a class="row" href="/work/${p.slug}" data-cat="${p.cats.join(" ")}">
             <span class="row__thumb"><img src="${p.thumb}" alt="" loading="lazy"></span>
             <span class="row__no label">${pad(i + 1)}</span>
             <span class="row__title">${esc(p.title)}</span>
@@ -639,14 +642,14 @@ function projectPage(p, i) {
   return `${head({
     title: `${p.title} | ${p.disciplines.join(", ")} | Autumn Leaf`,
     desc: `${p.intro} A ${p.year} project by Andy Ou / Autumn Leaf.`,
-    base, path: `work/${p.slug}.html`, image: p.thumb,
+    base, path: `work/${p.slug}`, image: p.thumb,
   })}
 <body>
 ${header(base, "work")}
 <main id="main">
   <section class="p-hero">
     <div class="p-hero__top label">
-      <a class="p-hero__back link-roll" href="${base}index.html#index"><span>← All work</span><span aria-hidden="true">← All work</span></a>
+      <a class="p-hero__back link-roll" href="/#index"><span>← All work</span><span aria-hidden="true">← All work</span></a>
       <span class="label--muted">${pad(i + 1)} / ${pad(PROJECTS.length)}</span>
     </div>
     <h1 class="p-hero__title display" data-project-title>${esc(p.title)}${p.titleCn ? ` <span class="brush">${p.titleCn}</span>` : ""}</h1>
@@ -668,7 +671,7 @@ ${header(base, "work")}
       ${(() => { const [href, text] = p.live ? [p.live, "Visit the live site ↗"] : [p.behance, "Full case study on Behance ↗"]; return `<a class="link-roll" href="${href}" target="_blank" rel="noopener"><span>${text}</span><span aria-hidden="true">${text}</span></a>`; })()}
     </div>
   </section>
-  <a class="p-next" href="${next.slug}.html" data-cursor="Next">
+  <a class="p-next" href="/work/${next.slug}" data-cursor="Next">
     <div class="p-next__label label"><span>Next project</span><span>${pad(((i + 1) % PROJECTS.length) + 1)} / ${pad(PROJECTS.length)}</span></div>
     <h2 class="p-next__title display" data-chars>${esc(next.title)}</h2>
     <div class="p-next__media"><img src="${base}${next.thumb}" alt="" loading="lazy"></div>
@@ -687,7 +690,7 @@ function contactPage() {
   return `${head({
     title: "Contact | Autumn Leaf",
     desc: "Start a project with Autumn Leaf. Brand identity, packaging, websites and motion by Andy Ou, Johannesburg.",
-    base, path: "contact.html",
+    base, path: "contact",
   })}
 <body>
 ${header(base, "contact")}
@@ -699,7 +702,7 @@ ${header(base, "contact")}
       <input type="hidden" name="_subject" value="New enquiry from autumnleafdesigns.co.za">
       <input type="hidden" name="_template" value="table">
       <input type="hidden" name="_captcha" value="false">
-      <input type="hidden" name="_next" value="${SITE}/contact.html?sent=1">
+      <input type="hidden" name="_next" value="${SITE}/contact?sent=1">
       <input type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
       <div class="field">
         <span class="label">I’m interested in</span>
@@ -753,7 +756,7 @@ function privacyPage() {
     ["Your rights", `Under South Africa’s Protection of Personal Information Act (POPIA) you can ask to see the information I hold about you, have it corrected, or have it deleted. Just email me. If you are unhappy with how your information was handled, you can contact the <a href="https://inforegulator.org.za" target="_blank" rel="noopener">Information Regulator</a>.`],
     ["Copyright", "All projects, photographs, illustrations, animations and designs on this site belong to Andy Ou and, where credited, his collaborators. Please ask before using any of them."],
   ];
-  return `${head({ title: "Privacy | Autumn Leaf", desc: "How Autumn Leaf handles your information. Short version: the site collects nothing, and emails are only used to reply.", base, path: "privacy.html" })}
+  return `${head({ title: "Privacy | Autumn Leaf", desc: "How Autumn Leaf handles your information. Short version: the site collects nothing, and emails are only used to reply.", base, path: "privacy" })}
 <body>
 ${header(base, "")}
 <main id="main" class="c-page legal">
@@ -786,7 +789,7 @@ ${header(base, "")}
     <span class="label label--muted">404</span>
     <h1>This page drifted away.</h1>
     <p>Like a leaf in autumn, it’s not where it used to be.</p>
-    <a class="pill" href="/index.html">Back home <span class="arrow">→</span></a>
+    <a class="pill" href="/">Back home <span class="arrow">→</span></a>
   </div>
 </main>
 ${scripts(base)}
@@ -796,23 +799,25 @@ ${scripts(base)}
 }
 
 // Old artwork URLs from the previous site keep working.
-const redirect = (to) => `<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>Autumn Leaf</title><meta http-equiv="refresh" content="0; url=${to}"><link rel="canonical" href="${SITE}/${to}"></head><body><a href="${to}">Continue to Autumn Leaf</a></body></html>\n`;
+const redirect = (to) => `<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>Autumn Leaf</title><meta http-equiv="refresh" content="0; url=${to}"><link rel="canonical" href="${SITE}${to}"></head><body><a href="${to}">Continue to Autumn Leaf</a></body></html>\n`;
 
 /* ---------------- write ---------------- */
 mkdirSync("work", { recursive: true });
+onHomePage = true;
 writeFileSync("index.html", indexPage());
+onHomePage = false;
 writeFileSync("contact.html", contactPage());
 writeFileSync("404.html", notFoundPage());
 writeFileSync("privacy.html", privacyPage());
 PROJECTS.forEach((p, i) => writeFileSync(`work/${p.slug}.html`, projectPage(p, i)));
-writeFileSync("artwork1.html", redirect("work/photography.html"));
-writeFileSync("artwork2.html", redirect("work/3d-modeling.html"));
-writeFileSync("artwork3.html", redirect("work/discord-ad.html"));
-writeFileSync("artwork4.html", redirect("work/ar-zen-garden.html"));
-writeFileSync("error.html", redirect("index.html"));
+writeFileSync("artwork1.html", redirect("/work/photography"));
+writeFileSync("artwork2.html", redirect("/work/3d-modeling"));
+writeFileSync("artwork3.html", redirect("/work/discord-ad"));
+writeFileSync("artwork4.html", redirect("/work/ar-zen-garden"));
+writeFileSync("error.html", redirect("/"));
 writeFileSync("CNAME", "autumnleafdesigns.co.za\n");
 writeFileSync(
   "sitemap.xml",
-  `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${["", "contact.html", "privacy.html", ...PROJECTS.map((p) => `work/${p.slug}.html`)].map((u) => `  <url><loc>${SITE}/${u}</loc></url>`).join("\n")}\n</urlset>\n`
+  `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${["", "contact", "privacy", ...PROJECTS.map((p) => `work/${p.slug}`)].map((u) => `  <url><loc>${SITE}/${u}</loc></url>`).join("\n")}\n</urlset>\n`
 );
 console.log(`Built index, contact, 404 and ${PROJECTS.length} project pages.`);
