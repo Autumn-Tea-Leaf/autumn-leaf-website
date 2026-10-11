@@ -3,11 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-lrKu7fHsKxHvsZmsg/i5sWvy8O7evH8zhZKHTv0k4B0='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; media-src 'self'; connect-src 'self' https://formsubmit.co; form-action https://formsubmit.co; frame-src https://www-ccv.adobe.io https://www.behance.net; object-src 'none'; base-uri 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-YASUl7DKHIeJ61ouYxqzTZU7oLvDmypsyRzJmjbaOKg='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; media-src 'self'; connect-src 'self' https://formsubmit.co; form-action https://formsubmit.co; frame-src https://www-ccv.adobe.io https://www.behance.net; object-src 'none'; base-uri 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <title>Atelier C | Visual identity, Packaging | Autumn Leaf</title>
 <meta name="description" content="Atelier C is a premium chocolate brand: bold, modern flavours alongside timeless classics. A 2025 project by Andy Ou / Autumn Leaf.">
-<meta name="theme-color" content="#e8ebee">
+<meta name="theme-color" content="#e8ebee" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#121920" media="(prefers-color-scheme: dark)">
 <link rel="canonical" href="https://autumnleafdesigns.co.za/work/atelier-c">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Atelier C | Visual identity, Packaging | Autumn Leaf">
@@ -24,6 +25,12 @@
 <link rel="stylesheet" href="../css/main.css">
 <script>
   document.documentElement.classList.add("js");
+  (function () {
+    var t = null;
+    try { t = localStorage.getItem("al-theme"); } catch (e) {}
+    if (t !== "dark" && t !== "light") t = window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    document.documentElement.setAttribute("data-theme", t);
+  })();
   setTimeout(function () { if (!window.__alBooted) document.documentElement.classList.remove("js"); }, 5000);
 </script>
 </head>
@@ -43,6 +50,7 @@
     <a class="link-roll" href="/#work" aria-current="page"><span>Work</span><span aria-hidden="true">Work</span></a>
     <a class="link-roll" href="/#about"><span>About</span><span aria-hidden="true">About</span></a>
     <a class="link-roll" href="/contact"><span>Contact</span><span aria-hidden="true">Contact</span></a>
+    <button class="theme-btn" type="button" data-theme-toggle aria-label="Switch to dark mode"><span class="theme-btn__icon" aria-hidden="true"></span><span data-theme-label>Dark</span></button>
   </nav>
   <button class="menu-btn label" aria-expanded="false" aria-controls="menu"><span class="menu-btn__text">Menu</span><span class="menu-btn__lines" aria-hidden="true"></span></button>
 </header>
@@ -55,6 +63,7 @@
   </nav>
   <div class="menu__foot label">
     <a href="mailto:autumnleafdesignstudio@gmail.com">autumnleafdesignstudio@gmail.com</a>
+    <button class="theme-btn" type="button" data-theme-toggle aria-label="Switch to dark mode"><span class="theme-btn__icon" aria-hidden="true"></span><span data-theme-label>Dark</span></button>
     <span data-clock></span>
   </div>
 </div>

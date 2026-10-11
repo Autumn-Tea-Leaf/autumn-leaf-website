@@ -507,6 +507,12 @@ function media(m, base, { parallax = 0, eager = false, style = "" } = {}) {
 // Tiny inline boot script; its hash is allowed by the CSP below, so no other inline script can run.
 const BOOT_JS = `
   document.documentElement.classList.add("js");
+  (function () {
+    var t = null;
+    try { t = localStorage.getItem("al-theme"); } catch (e) {}
+    if (t !== "dark" && t !== "light") t = window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    document.documentElement.setAttribute("data-theme", t);
+  })();
   setTimeout(function () { if (!window.__alBooted) document.documentElement.classList.remove("js"); }, 5000);
 `;
 // Content Security Policy: only this site's own scripts run, the form can only post to FormSubmit,
@@ -538,7 +544,8 @@ function head({ title, desc, base, path, image = "assets/brand/og.jpg" }) {
 <link rel="preload" href="/assets/brand/ink-blot.png" as="image" type="image/png">` : ""}
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(desc)}">
-<meta name="theme-color" content="#e8ebee">
+<meta name="theme-color" content="#e8ebee" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#121920" media="(prefers-color-scheme: dark)">
 <link rel="canonical" href="${SITE}/${path}">
 <meta property="og:type" content="website">
 <meta property="og:title" content="${esc(title)}">
@@ -577,6 +584,7 @@ function header(base, current) {
   </div>
   <nav class="header__nav label" aria-label="Primary">
     ${nav.map(([l, h, k]) => `<a class="link-roll" href="${h}"${current === k ? ' aria-current="page"' : ""}>${roll(l)}</a>`).join("\n    ")}
+    <button class="theme-btn" type="button" data-theme-toggle aria-label="Switch to dark mode"><span class="theme-btn__icon" aria-hidden="true"></span><span data-theme-label>Dark</span></button>
   </nav>
   <button class="menu-btn label" aria-expanded="false" aria-controls="menu"><span class="menu-btn__text">Menu</span><span class="menu-btn__lines" aria-hidden="true"></span></button>
 </header>
@@ -587,6 +595,7 @@ function header(base, current) {
   </nav>
   <div class="menu__foot label">
     <a href="mailto:${EMAIL}">${EMAIL}</a>
+    <button class="theme-btn" type="button" data-theme-toggle aria-label="Switch to dark mode"><span class="theme-btn__icon" aria-hidden="true"></span><span data-theme-label>Dark</span></button>
     <span data-clock></span>
   </div>
 </div>
@@ -1022,7 +1031,7 @@ function privacyPage() {
   const sections = [
     ["Who I am", `This site belongs to Andy Ou, trading as Autumn Leaf Design Studio, based in Johannesburg, South Africa. For anything about your personal information, email <a href="mailto:${EMAIL}">${EMAIL}</a>.`],
     ["What this site collects", "Nothing in the background. There are no cookies, no analytics and no advertising trackers. Fonts and scripts are served from this site rather than from outside services. Like every website, the hosting provider (GitHub Pages) briefly logs technical details such as IP addresses to keep the service secure."],
-    ["Browser storage", "The site saves one small note in your browser so the intro animation only plays once per visit. It is not a cookie, it is never sent anywhere, and it clears itself when you close the tab. If you send the contact form, your browser also keeps the times of your last few messages for a day, to stop spam floods. That note holds no names or messages and is never sent anywhere."],
+    ["Browser storage", "The site saves one small note in your browser so the intro animation only plays once per visit. It is not a cookie, it is never sent anywhere, and it clears itself when you close the tab. If you send the contact form, your browser also keeps the times of your last few messages for a day, to stop spam floods. That note holds no names or messages and is never sent anywhere. If you switch between light and dark mode, your choice is remembered the same way."],
     ["The contact form", "When you send the contact form, your name, email address, phone number (if you add one), the type of project and your message are emailed to me through FormSubmit (formsubmit.co), a service that forwards form messages to my inbox. Nothing is stored on this site itself."],
     ["When you email me", "I receive your name, email address and whatever you choose to write. I use it only to reply and to work with you on your project. I never sell it or share it for marketing. I keep our emails for as long as we are working together and afterwards only as long as I need them for my records, and I will delete them sooner if you ask."],
     ["Third-party content", "The Vega project page includes a video player from Adobe (Behance), which may set its own cookies when it loads. Links to Behance, LinkedIn and Instagram take you to sites with their own privacy policies."],

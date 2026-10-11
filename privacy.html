@@ -3,11 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-lrKu7fHsKxHvsZmsg/i5sWvy8O7evH8zhZKHTv0k4B0='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; media-src 'self'; connect-src 'self' https://formsubmit.co; form-action https://formsubmit.co; frame-src https://www-ccv.adobe.io https://www.behance.net; object-src 'none'; base-uri 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-YASUl7DKHIeJ61ouYxqzTZU7oLvDmypsyRzJmjbaOKg='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; media-src 'self'; connect-src 'self' https://formsubmit.co; form-action https://formsubmit.co; frame-src https://www-ccv.adobe.io https://www.behance.net; object-src 'none'; base-uri 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <title>Privacy | Autumn Leaf</title>
 <meta name="description" content="How Autumn Leaf handles your information. Short version: the site collects nothing, and emails are only used to reply.">
-<meta name="theme-color" content="#e8ebee">
+<meta name="theme-color" content="#e8ebee" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#121920" media="(prefers-color-scheme: dark)">
 <link rel="canonical" href="https://autumnleafdesigns.co.za/privacy">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Privacy | Autumn Leaf">
@@ -24,6 +25,12 @@
 <link rel="stylesheet" href="css/main.css">
 <script>
   document.documentElement.classList.add("js");
+  (function () {
+    var t = null;
+    try { t = localStorage.getItem("al-theme"); } catch (e) {}
+    if (t !== "dark" && t !== "light") t = window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    document.documentElement.setAttribute("data-theme", t);
+  })();
   setTimeout(function () { if (!window.__alBooted) document.documentElement.classList.remove("js"); }, 5000);
 </script>
 </head>
@@ -43,6 +50,7 @@
     <a class="link-roll" href="/#work"><span>Work</span><span aria-hidden="true">Work</span></a>
     <a class="link-roll" href="/#about"><span>About</span><span aria-hidden="true">About</span></a>
     <a class="link-roll" href="/contact"><span>Contact</span><span aria-hidden="true">Contact</span></a>
+    <button class="theme-btn" type="button" data-theme-toggle aria-label="Switch to dark mode"><span class="theme-btn__icon" aria-hidden="true"></span><span data-theme-label>Dark</span></button>
   </nav>
   <button class="menu-btn label" aria-expanded="false" aria-controls="menu"><span class="menu-btn__text">Menu</span><span class="menu-btn__lines" aria-hidden="true"></span></button>
 </header>
@@ -55,6 +63,7 @@
   </nav>
   <div class="menu__foot label">
     <a href="mailto:autumnleafdesignstudio@gmail.com">autumnleafdesignstudio@gmail.com</a>
+    <button class="theme-btn" type="button" data-theme-toggle aria-label="Switch to dark mode"><span class="theme-btn__icon" aria-hidden="true"></span><span data-theme-label>Dark</span></button>
     <span data-clock></span>
   </div>
 </div>
@@ -70,7 +79,7 @@
     <div class="legal__body">
       <section class="legal__item" data-fade><span class="label">01</span><div><h2>Who I am</h2><p>This site belongs to Andy Ou, trading as Autumn Leaf Design Studio, based in Johannesburg, South Africa. For anything about your personal information, email <a href="mailto:autumnleafdesignstudio@gmail.com">autumnleafdesignstudio@gmail.com</a>.</p></div></section>
       <section class="legal__item" data-fade><span class="label">02</span><div><h2>What this site collects</h2><p>Nothing in the background. There are no cookies, no analytics and no advertising trackers. Fonts and scripts are served from this site rather than from outside services. Like every website, the hosting provider (GitHub Pages) briefly logs technical details such as IP addresses to keep the service secure.</p></div></section>
-      <section class="legal__item" data-fade><span class="label">03</span><div><h2>Browser storage</h2><p>The site saves one small note in your browser so the intro animation only plays once per visit. It is not a cookie, it is never sent anywhere, and it clears itself when you close the tab. If you send the contact form, your browser also keeps the times of your last few messages for a day, to stop spam floods. That note holds no names or messages and is never sent anywhere.</p></div></section>
+      <section class="legal__item" data-fade><span class="label">03</span><div><h2>Browser storage</h2><p>The site saves one small note in your browser so the intro animation only plays once per visit. It is not a cookie, it is never sent anywhere, and it clears itself when you close the tab. If you send the contact form, your browser also keeps the times of your last few messages for a day, to stop spam floods. That note holds no names or messages and is never sent anywhere. If you switch between light and dark mode, your choice is remembered the same way.</p></div></section>
       <section class="legal__item" data-fade><span class="label">04</span><div><h2>The contact form</h2><p>When you send the contact form, your name, email address, phone number (if you add one), the type of project and your message are emailed to me through FormSubmit (formsubmit.co), a service that forwards form messages to my inbox. Nothing is stored on this site itself.</p></div></section>
       <section class="legal__item" data-fade><span class="label">05</span><div><h2>When you email me</h2><p>I receive your name, email address and whatever you choose to write. I use it only to reply and to work with you on your project. I never sell it or share it for marketing. I keep our emails for as long as we are working together and afterwards only as long as I need them for my records, and I will delete them sooner if you ask.</p></div></section>
       <section class="legal__item" data-fade><span class="label">06</span><div><h2>Third-party content</h2><p>The Vega project page includes a video player from Adobe (Behance), which may set its own cookies when it loads. Links to Behance, LinkedIn and Instagram take you to sites with their own privacy policies.</p></div></section>

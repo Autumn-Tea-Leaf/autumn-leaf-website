@@ -17,6 +17,8 @@
   --c-slate-deep: #3b4b57;
   --c-line: rgba(36, 48, 58, 0.14);
   --c-line-light: rgba(255, 255, 255, 0.22);
+  /* Panels that sit on the page (white in light mode) */
+  --c-surface: #ffffff;
 
   --f-sans: "Montserrat", system-ui, sans-serif;
   --f-mono: "Courier New", Courier, monospace;
@@ -29,6 +31,21 @@
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
 }
+
+/* Dark mode: ink-blue page, mist text, same gold. White stays white for text on slate. */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --c-mist: #121920;
+  --c-surface: #19222a;
+  --c-fog: #222c35;
+  --c-ink: #e4e8ec;
+  --c-ink-soft: #a9b4be;
+  --c-slate: #5d7385;
+  --c-line: rgba(228, 232, 236, 0.14);
+}
+:root[data-theme="dark"] .header__mark .mark-dark { opacity: 0; }
+:root[data-theme="dark"] .header__mark .mark-light { opacity: 1; }
+:root[data-theme="dark"] .about__film { box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.6); }
 
 /* ---------- Reset ---------- */
 *, *::before, *::after { box-sizing: border-box; }
@@ -199,6 +216,9 @@ html.lenis, html.lenis body { height: auto; }
   content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: currentColor;
 }
 
+.theme-btn { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; white-space: nowrap; }
+.theme-btn__icon { width: 12px; height: 12px; border-radius: 50%; border: 1px solid currentColor; background: linear-gradient(90deg, currentColor 50%, transparent 50%); transition: transform 0.6s var(--ease-out); }
+:root[data-theme="dark"] .theme-btn__icon { transform: rotate(180deg); }
 .menu-btn { display: none; grid-column: -3 / -1; justify-self: end; align-items: center; gap: 10px; }
 .menu-btn__lines { width: 22px; height: 8px; position: relative; }
 .menu-btn__lines::before, .menu-btn__lines::after {
@@ -554,7 +574,7 @@ html.lenis, html.lenis body { height: auto; }
 }
 
 /* ---------- Work index ---------- */
-.index { background: var(--c-white); }
+.index { background: var(--c-surface); }
 .index__filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
 .filter {
   padding: 9px 16px;
@@ -666,7 +686,7 @@ html.lenis, html.lenis body { height: auto; }
   right: -12%;
   bottom: -10%;
   width: 46%;
-  background: var(--c-white);
+  background: var(--c-surface);
   padding: 6%;
   box-shadow: 0 30px 60px -30px rgba(36, 48, 58, 0.35);
 }
@@ -707,7 +727,7 @@ html.lenis, html.lenis body { height: auto; }
 }
 
 /* ---------- Paid advertising ---------- */
-.ads { background: var(--c-white); padding-block: clamp(72px, 9vw, 140px); }
+.ads { background: var(--c-surface); padding-block: clamp(72px, 9vw, 140px); }
 .services__link { color: inherit; text-decoration: none; }
 .services__link .arrow { display: inline-block; color: var(--c-gold); transition: transform 0.5s var(--ease-out); }
 .services__link:hover .arrow, .services__link:focus-visible .arrow { transform: translateX(4px); }
@@ -836,7 +856,7 @@ html.lenis, html.lenis body { height: auto; }
 .p-gallery figure.is-embed { aspect-ratio: 16 / 9; background: var(--c-ink); }
 .p-gallery figure.is-embed iframe { width: 100%; height: 100%; border: 0; }
 .p-gallery__note { width: 100%; max-width: 1400px; display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding-top: 24px; border-top: 1px solid var(--c-line); color: var(--c-slate); }
-.p-next { display: block; position: relative; background: var(--c-white); padding: clamp(80px, 10vw, 160px) var(--gutter); overflow: hidden; }
+.p-next { display: block; position: relative; background: var(--c-surface); padding: clamp(80px, 10vw, 160px) var(--gutter); overflow: hidden; }
 .p-next__label { display: flex; justify-content: space-between; margin-bottom: 32px; color: var(--c-slate); }
 .p-next__title { font-size: clamp(3rem, 11vw, 12rem); position: relative; z-index: 2; transition: color 0.6s; overflow-wrap: anywhere; min-width: 0; }
 .p-next__media {
@@ -921,7 +941,7 @@ html.lenis, html.lenis body { height: auto; }
   align-items: flex-start;
   gap: 20px;
   padding: clamp(28px, 4vw, 48px);
-  background: var(--c-white);
+  background: var(--c-surface);
   overflow: hidden;
 }
 .c-thanks[hidden], .p-gallery[hidden] { display: none; }

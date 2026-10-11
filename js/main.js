@@ -158,6 +158,32 @@
     }
   }
 
+  /* ---------- Dark / light theme ---------- */
+  function initTheme() {
+    const btns = $$("[data-theme-toggle]");
+    const sync = () => {
+      const dark = doc.getAttribute("data-theme") === "dark";
+      btns.forEach((b) => {
+        $("[data-theme-label]", b).textContent = dark ? "Light" : "Dark";
+        b.setAttribute("aria-label", dark ? "Switch to light mode" : "Switch to dark mode");
+      });
+    };
+    btns.forEach((b) => b.addEventListener("click", () => {
+      const next = doc.getAttribute("data-theme") === "dark" ? "light" : "dark";
+      doc.setAttribute("data-theme", next);
+      try { localStorage.setItem("al-theme", next); } catch (e) {}
+      sync();
+    }));
+    // Follow the system setting until the visitor picks one themselves
+    const mq = window.matchMedia("(prefers-color-scheme: dark)");
+    if (mq.addEventListener) mq.addEventListener("change", (e) => {
+      let saved = null;
+      try { saved = localStorage.getItem("al-theme"); } catch (err) {}
+      if (!saved) { doc.setAttribute("data-theme", e.matches ? "dark" : "light"); sync(); }
+    });
+    sync();
+  }
+
   /* ---------- Johannesburg clock ---------- */
   function initClock() {
     const els = $$("[data-clock]");
@@ -872,6 +898,7 @@ ${message}`;
   /* ---------- Boot ---------- */
   const start = () => {
     initHeader();
+    initTheme();
     initClock();
     initAnchors();
     initTransitions();
