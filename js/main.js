@@ -787,11 +787,14 @@
       if (!ok) { status.textContent = ""; return; }
 
       // Spam checks.
-      // Only the hidden traps (which no person can see) discard a message. Softer signals still send,
-      // flagged in the subject, so a real enquiry is never lost.
-      const trapped = (form.elements._honey && form.elements._honey.value) || (form.elements.fax_only && form.elements.fax_only.checked);
-      if (trapped) { form.reset(); showThanks(name, email); return; }
-      const suspect = Date.now() - openedAt < 3000 || !interacted;
+      // Nothing is ever silently dropped (browser autofill can fill hidden trap fields). Anything that
+      // trips a check is still sent, flagged in the subject with the reason, so no real enquiry is lost.
+      const flags = [];
+      if (form.elements._honey && form.elements._honey.value) flags.push("hidden field filled (often autofill)");
+      if (form.elements.fax_only && form.elements.fax_only.checked) flags.push("hidden checkbox ticked");
+      if (Date.now() - openedAt < 3000) flags.push("sent within 3 seconds");
+      if (!interacted) flags.push("no typing or clicks");
+      const suspect = flags.length > 0;
       if ((message.match(/https?:\/\/|www\./gi) || []).length > 3) {
         setErr("message", "Please keep links to three or fewer, or describe the project in words.");
         return;
@@ -826,6 +829,7 @@
             Phone: phone || "Not given",
             "Interested in": type,
             Message: message,
+            ...(suspect ? { "Spam check": flags.join("; ") } : {}),
           }),
         });
         const data = await res.json().catch(() => ({}));
