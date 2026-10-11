@@ -786,10 +786,12 @@
       const phone = phoneRaw && phoneOk ? `+${dial} ${digits}` : "";
       if (!ok) { status.textContent = ""; return; }
 
-      // Spam checks. Bots get a normal-looking thank-you and nothing is sent.
+      // Spam checks.
+      // Only the hidden traps (which no person can see) discard a message. Softer signals still send,
+      // flagged in the subject, so a real enquiry is never lost.
       const trapped = (form.elements._honey && form.elements._honey.value) || (form.elements.fax_only && form.elements.fax_only.checked);
-      const tooFast = Date.now() - openedAt < 3000;
-      if (trapped || tooFast || !interacted) { form.reset(); showThanks(name, email); return; }
+      if (trapped) { form.reset(); showThanks(name, email); return; }
+      const suspect = Date.now() - openedAt < 3000 || !interacted;
       if ((message.match(/https?:\/\/|www\./gi) || []).length > 3) {
         setErr("message", "Please keep links to three or fewer, or describe the project in words.");
         return;
@@ -815,10 +817,9 @@
           method: "POST",
           headers: { "Content-Type": "application/json", Accept: "application/json" },
           body: JSON.stringify({
-            _subject: `${type} enquiry from ${name}`,
+            _subject: `${suspect ? "[Check: possible spam] " : ""}${type} enquiry from ${name}`,
             _template: "table",
             _captcha: "false",
-            _blacklist: form.elements._blacklist ? form.elements._blacklist.value : "",
             _replyto: email,
             Name: name,
             Email: email,

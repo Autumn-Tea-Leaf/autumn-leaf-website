@@ -11,8 +11,6 @@ const SITE = "https://autumnleafdesigns.co.za";
 const EMAIL = "autumnleafdesignstudio@gmail.com";
 // Contact form submissions are emailed here through FormSubmit (formsubmit.co).
 const FORM_TO = "autumnleafdesignstudio@gmail.com";
-// FormSubmit drops messages containing any of these (comma separated). Keep "SEO" and "ads" out: real clients mention them.
-const SPAM_PHRASES = "backlinks, guest post, casino, viagra, cialis, crypto, bitcoin, forex, loan offer, escort, porn, web traffic, first page of google, link building, whatsapp marketing";
 // Animation switches. Off for now; set to true to bring them back.
 const INK_WASH = false; // two-layer ink-wash page transition (off = plain slate curtain)
 const INK_BLEED = false; // ink-pool image reveals (off = frame wipe and fade-in)
@@ -956,7 +954,6 @@ ${header(base, "contact")}
       <input type="hidden" name="_subject" value="New enquiry from autumnleafdesigns.co.za">
       <input type="hidden" name="_template" value="table">
       <input type="hidden" name="_captcha" value="true">
-      <input type="hidden" name="_blacklist" value="${SPAM_PHRASES}">
       <input type="hidden" name="_next" value="${SITE}/contact?sent=1">
       <input type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
       <div aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden"><label for="f-fax">Contact me by fax only</label><input type="checkbox" id="f-fax" name="fax_only" value="1" tabindex="-1"></div>
