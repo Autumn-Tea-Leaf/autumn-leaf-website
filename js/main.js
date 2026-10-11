@@ -194,8 +194,15 @@
     });
   }
 
-  /* ---------- Page transitions ---------- */
+  /* ---------- Page transitions: ink wash ---------- */
   const curtain = $(".curtain");
+  const wash = curtain && $(".curtain__wash", curtain);
+  const ink = curtain && $(".curtain__ink", curtain);
+  const cnChars = curtain ? $$(".curtain__cn > span", curtain) : [];
+  const layers = [wash, ink].filter(Boolean);
+  const disp = document.querySelector("#ink-edge feDisplacementMap");
+  const bleed = (from, to, d) => { if (!disp) return; const o = { v: from }; gsap.to(o, { v: to, duration: d, ease: "power2.out", onUpdate: () => disp.setAttribute("scale", o.v.toFixed(1)) }); };
+
   function initTransitions() {
     if (!curtain || reduce) return;
     $$("a[href]").forEach((a) => {
@@ -206,25 +213,46 @@
       a.addEventListener("click", (e) => {
         if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
         e.preventDefault();
+        if (!wash) {
+          // Plain slate curtain
+          gsap.timeline({ onComplete: () => (location.href = a.href) })
+            .set(ink, { yPercent: 100 })
+            .to(ink, { yPercent: 0, duration: 0.8, ease: "expo.inOut" })
+            .to(".curtain__cn", { opacity: 1, duration: 0.4, ease: "power2.out" }, "-=0.3");
+          return;
+        }
+        bleed(20, 9, 1.1);
         gsap.timeline({ onComplete: () => (location.href = a.href) })
-          .set(curtain, { yPercent: 100 })
-          .to(curtain, { yPercent: 0, duration: 0.8, ease: "expo.inOut" })
-          .to(".curtain__cn", { opacity: 1, duration: 0.4, ease: "power2.out" }, "-=0.3");
+          .set([wash, ink], { yPercent: 118 })
+          .set(cnChars, { clipPath: "inset(0 0 100% 0)", opacity: 1, yPercent: 0, filter: "blur(0px)" })
+          .set(".curtain__cn", { opacity: 1 })
+          .to(wash, { yPercent: 0, duration: 0.85, ease: "expo.inOut" })
+          .to(ink, { yPercent: 0, duration: 0.85, ease: "expo.inOut" }, 0.12)
+          .to(cnChars, { clipPath: "inset(0 0 0% 0)", duration: 0.55, stagger: 0.12, ease: "power2.inOut" }, 0.62);
       });
     });
     // Leaving via back/forward cache: reset the curtain.
-    window.addEventListener("pageshow", (e) => { if (e.persisted) gsap.set(curtain, { yPercent: 100 }); });
+    window.addEventListener("pageshow", (e) => { if (e.persisted) gsap.set(layers, { yPercent: 118 }); });
   }
 
   function curtainOut() {
     if (!curtain) return Promise.resolve();
     if (reduce) { curtain.remove(); return Promise.resolve(); }
-    gsap.set(curtain, { yPercent: 0 });
+    gsap.set(layers, { yPercent: 0 });
     gsap.set(".curtain__cn", { opacity: 1 });
+    if (!wash) {
+      return new Promise((res) => {
+        gsap.timeline({ onComplete: res })
+          .to(".curtain__cn", { opacity: 0, duration: 0.3, ease: "power1.out" })
+          .to(ink, { yPercent: -100, duration: 1, ease: "expo.inOut" }, "-=0.1");
+      });
+    }
+    bleed(9, 18, 1.2);
     return new Promise((res) => {
       gsap.timeline({ onComplete: res })
-        .to(".curtain__cn", { opacity: 0, duration: 0.3, ease: "power1.out" })
-        .to(curtain, { yPercent: -100, duration: 1, ease: "expo.inOut" }, "-=0.1");
+        .to(cnChars, { yPercent: -30, opacity: 0, filter: "blur(6px)", duration: 0.45, stagger: 0.06, ease: "power2.in" })
+        .to(ink, { yPercent: -118, duration: 1.05, ease: "expo.inOut" }, 0.2)
+        .to(wash, { yPercent: -118, duration: 1.05, ease: "expo.inOut" }, 0.36);
     });
   }
 
@@ -238,7 +266,7 @@
       return curtainOut();
     }
     try { sessionStorage.setItem("al-loaded", "1"); } catch (_) { /* storage blocked */ }
-    if (curtain) gsap.set(curtain, { yPercent: 100 });
+    if (curtain) gsap.set(layers, { yPercent: 118 });
     if (lenis) lenis.stop();
     const count = $(".loader__count", loader);
     const state = { v: 0 };
@@ -422,6 +450,7 @@
   }
 
   /* ---------- Horizontal principles ---------- */
+  let horizontalTween = null;
   function initHorizontal() {
     const sec = $("[data-horizontal]");
     if (!sec || reduce) return;
@@ -429,7 +458,7 @@
     const pin = $(".principles__pin", sec);
     const bar = $(".principles__progress i", sec);
     const distance = () => Math.max(0, track.scrollWidth - window.innerWidth);
-    const tween = gsap.to(track, {
+    const tween = horizontalTween = gsap.to(track, {
       x: () => -distance(),
       ease: "none",
       scrollTrigger: {
@@ -448,6 +477,55 @@
       gsap.fromTo(cn, { yPercent: 18, rotate: -6 }, {
         yPercent: -18, rotate: 4, ease: "none",
         scrollTrigger: { trigger: p, containerAnimation: tween, start: "left right", end: "right left", scrub: true },
+      });
+    });
+  }
+
+  /* ---------- Ink-bleed image reveals ---------- */
+  function initInk() {
+    if (reduce) return;
+    $$("[data-ink]").forEach((el, i) => {
+      // Vary where each pool starts so neighbouring images don't bloom identically
+      const ox = 32 + ((i * 37) % 36), oy = 30 + ((i * 53) % 40);
+      gsap.set(el, { "--blot": "0%", "--ox": `${ox}%`, "--oy": `${oy}%` });
+      el.classList.add("is-inking");
+      const inView = el.getBoundingClientRect().top < window.innerHeight;
+      gsap.to(el, {
+        "--blot": "460%", duration: 2, ease: "power2.inOut",
+        delay: inView ? 0.9 : 0, // wait for the page transition to lift
+        scrollTrigger: { trigger: el, start: "top 88%", once: true },
+        onComplete: () => el.classList.remove("is-inking"),
+      });
+    });
+  }
+
+  /* ---------- Brush-written characters ---------- */
+  // Each Chinese character is inked top to bottom (soft-edged mask), sharpening from a slight blur.
+  function initBrush() {
+    if (reduce) return;
+    const skip = ".header, .curtain, .loader, .marquee, [data-hero], .c-thanks, .menu";
+    $$(".brush").forEach((el) => {
+      if (el.closest(skip) || el.children.length) return;
+      const text = el.textContent.trim();
+      if (!text) return;
+      el.textContent = "";
+      const chars = [...text].map((ch) => {
+        const s = document.createElement("span");
+        s.className = "ink";
+        s.textContent = ch;
+        el.append(s);
+        return s;
+      });
+      gsap.set(chars, { "--ink": "100%", filter: "blur(5px)", opacity: 0.5 });
+      const inView = el.getBoundingClientRect().top < window.innerHeight;
+      const st = { trigger: el, start: "top 88%", once: true };
+      const hz = el.closest("[data-horizontal]");
+      if (hz && horizontalTween) Object.assign(st, { containerAnimation: horizontalTween, start: "left 78%" });
+      gsap.to(chars, {
+        "--ink": "0%", filter: "blur(0px)", opacity: 1,
+        duration: 1.4, stagger: 0.32, ease: "power2.inOut",
+        delay: inView ? 0.9 : 0, // wait for the page transition to lift
+        scrollTrigger: st,
       });
     });
   }
@@ -560,6 +638,47 @@
       dot.classList.toggle("is-link", !!hit && !hit.closest("[data-cursor]"));
       const hero = e.target.closest("[data-hero]");
       dot.classList.toggle("on-dark", !!e.target.closest("[data-header='light']") || (!!hero && !!header && header.classList.contains("is-light")));
+    });
+  }
+
+  /* ---------- Magnetic buttons ---------- */
+  // Pill buttons lean towards the cursor once it comes within reach, then spring back.
+  function initMagnetic() {
+    if (reduce || !finePointer) return;
+    const magnets = $$(".pill").map((el) => ({
+      el,
+      x: gsap.quickTo(el, "x", { duration: 0.6, ease: "power3" }),
+      y: gsap.quickTo(el, "y", { duration: 0.6, ease: "power3" }),
+      on: false,
+    }));
+    if (!magnets.length) return;
+    const reach = 70; // px around the button where the pull starts
+    window.addEventListener("pointermove", (e) => {
+      magnets.forEach((m) => {
+        const r = m.el.getBoundingClientRect();
+        const cx = r.left + r.width / 2 - gsap.getProperty(m.el, "x");
+        const cy = r.top + r.height / 2 - gsap.getProperty(m.el, "y");
+        const dx = e.clientX - cx, dy = e.clientY - cy;
+        const near = Math.abs(dx) < r.width / 2 + reach && Math.abs(dy) < r.height / 2 + reach;
+        if (near) { m.on = true; m.x(gsap.utils.clamp(-14, 14, dx * 0.22)); m.y(gsap.utils.clamp(-9, 9, dy * 0.3)); }
+        else if (m.on) { m.on = false; gsap.to(m.el, { x: 0, y: 0, duration: 1, ease: "elastic.out(1, 0.45)", overwrite: "auto" }); }
+      });
+    }, { passive: true });
+  }
+
+  /* ---------- Scroll skew ---------- */
+  // Images lean very slightly with scroll speed and settle when scrolling stops.
+  function initSkew() {
+    if (reduce || !lenis || !finePointer) return;
+    const els = $$(".card__frame, .p-gallery figure, .about__frame");
+    if (!els.length) return;
+    const setters = els.map((el) => gsap.quickTo(el, "skewY", { duration: 0.7, ease: "power3" }));
+    let settle;
+    lenis.on("scroll", ({ velocity }) => {
+      const deg = gsap.utils.clamp(-2.5, 2.5, -velocity * 0.09);
+      setters.forEach((s) => s(deg));
+      clearTimeout(settle);
+      settle = setTimeout(() => setters.forEach((s) => s(0)), 120);
     });
   }
 
@@ -757,9 +876,13 @@ ${message}`;
     initParallax();
     initReveals();
     initHorizontal();
+    initBrush();
+    initInk();
     initMarquee();
     initIndex();
     initCursor();
+    initMagnetic();
+    initSkew();
     initFooter();
     initVideos();
     initContactForm();

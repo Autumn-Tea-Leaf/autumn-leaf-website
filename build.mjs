@@ -13,6 +13,9 @@ const EMAIL = "autumnleafdesignstudio@gmail.com";
 const FORM_TO = "autumnleafdesignstudio@gmail.com";
 // FormSubmit drops messages containing any of these (comma separated). Keep "SEO" and "ads" out: real clients mention them.
 const SPAM_PHRASES = "backlinks, guest post, casino, viagra, cialis, crypto, bitcoin, forex, loan offer, escort, porn, web traffic, first page of google, link building, whatsapp marketing";
+// Animation switches. Off for now; set to true to bring them back.
+const INK_WASH = false; // two-layer ink-wash page transition (off = plain slate curtain)
+const INK_BLEED = false; // ink-pool image reveals (off = frame wipe and fade-in)
 // WhatsApp fallback shown if the form can't send (international format, no +).
 const WHATSAPP = "27614420425";
 const WHATSAPP_DISPLAY = "061 442 0425";
@@ -533,7 +536,8 @@ function head({ title, desc, base, path, image = "assets/brand/og.jpg" }) {
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Security-Policy" content="${CSP}">
-<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="referrer" content="strict-origin-when-cross-origin">${INK_BLEED ? `
+<link rel="preload" href="/assets/brand/ink-blot.png" as="image" type="image/png">` : ""}
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(desc)}">
 <meta name="theme-color" content="#e8ebee">
@@ -588,7 +592,7 @@ function header(base, current) {
     <span data-clock></span>
   </div>
 </div>
-<div class="curtain" aria-hidden="true"><span class="curtain__cn brush">秋叶</span></div>
+${INK_WASH ? `<div class="curtain" aria-hidden="true"><svg width="0" height="0" style="position:absolute"><filter id="ink-edge"><feTurbulence type="fractalNoise" baseFrequency="0.006 0.022" numOctaves="2" seed="7"/><feDisplacementMap in="SourceGraphic" scale="12" xChannelSelector="R" yChannelSelector="G"/></filter></svg><div class="curtain__layer curtain__wash"><svg class="curtain__edge curtain__edge--top" viewBox="0 0 1440 120" preserveAspectRatio="none"><path d="M0,120 L0,64 C110,30 210,92 340,58 C470,24 560,86 700,52 C840,18 930,90 1070,60 C1190,34 1300,80 1440,46 L1440,120 Z"/></svg><svg class="curtain__edge curtain__edge--bottom" viewBox="0 0 1440 120" preserveAspectRatio="none"><path d="M0,120 L0,56 C130,88 240,26 380,60 C520,94 620,30 760,62 C900,94 1010,24 1150,58 C1270,86 1350,40 1440,66 L1440,120 Z"/></svg></div><div class="curtain__layer curtain__ink"><svg class="curtain__edge curtain__edge--top" viewBox="0 0 1440 120" preserveAspectRatio="none"><path d="M0,120 L0,64 C110,30 210,92 340,58 C470,24 560,86 700,52 C840,18 930,90 1070,60 C1190,34 1300,80 1440,46 L1440,120 Z"/></svg><svg class="curtain__edge curtain__edge--bottom" viewBox="0 0 1440 120" preserveAspectRatio="none"><path d="M0,120 L0,56 C130,88 240,26 380,60 C520,94 620,30 760,62 C900,94 1010,24 1150,58 C1270,86 1350,40 1440,66 L1440,120 Z"/></svg></div><span class="curtain__cn brush"><span>秋</span><span>叶</span></span></div>` : `<div class="curtain" aria-hidden="true"><div class="curtain__layer curtain__ink"></div><span class="curtain__cn brush">秋叶</span></div>`}
 <div class="cursor" aria-hidden="true"><span>View</span></div>
 <div class="dot" aria-hidden="true"></div>`;
 }
@@ -652,7 +656,7 @@ function indexPage() {
     const speeds = ["1", "0.86", "1", "0.9"];
     return `
       <a class="card" href="/work/${p.slug}" data-cursor="View" data-speed="${speeds[i]}">
-        <div class="card__frame" data-clip>
+        <div class="card__frame" ${INK_BLEED ? "data-ink" : "data-clip"}>
           <div class="card__media-scale">${media(p.cover, base, { parallax: 10 })}</div>
         </div>
         <div class="card__meta">
@@ -876,16 +880,16 @@ function projectPage(p, i) {
 
   const gallery = p.gallery.map((m) => {
     if (m.type === "embed") {
-      return `<figure class="is-embed" data-fade><iframe src="${m.src}" title="${esc(m.alt)}" loading="lazy" allow="autoplay; fullscreen" allowfullscreen></iframe></figure>`;
+      return `<figure class="is-embed" ${INK_BLEED ? "data-ink" : "data-fade"}><iframe src="${m.src}" title="${esc(m.alt)}" loading="lazy" allow="autoplay; fullscreen" allowfullscreen></iframe></figure>`;
     }
     if (m.type === "film") {
       const fd = dims[m.src];
-      return `<figure${fd && fd[1] > fd[0] ? ' class="is-portrait"' : ""} data-fade><video src="${base}${m.src}" poster="${base}${m.poster}"${wh(m.src)} controls playsinline preload="metadata" aria-label="${esc(m.alt)}"></video></figure>`;
+      return `<figure${fd && fd[1] > fd[0] ? ' class="is-portrait"' : ""} ${INK_BLEED ? "data-ink" : "data-fade"}><video src="${base}${m.src}" poster="${base}${m.poster}"${wh(m.src)} controls playsinline preload="metadata" aria-label="${esc(m.alt)}"></video></figure>`;
     }
     const d = dims[m.src];
     const portrait = d && d[1] > d[0] && d[1] / d[0] < 2;
     const small = d && d[0] < 900 ? ` style="max-width:${d[0]}px"` : "";
-    return `<figure${portrait ? ' class="is-portrait"' : ""}${small} data-fade>${media(m, base)}</figure>`;
+    return `<figure${portrait ? ' class="is-portrait"' : ""}${small} ${INK_BLEED ? "data-ink" : "data-fade"}>${media(m, base)}</figure>`;
   }).join("\n    ");
 
   return `${head({
@@ -912,7 +916,7 @@ ${header(base, "work")}
       </dl>
     </div>
   </section>
-  <div class="p-cover" style="${(() => { const d = dims[p.cover.src]; return (d ? `--ar:${d[0]}/${d[1]};` : "") + (p.coverBg ? `background:${p.coverBg}` : ""); })()}">${media(p.cover, base, { parallax: p.coverFit ? 0 : 10, eager: true, style: coverStyle })}</div>
+  <div class="p-cover"${INK_BLEED ? " data-ink" : ""} style="${(() => { const d = dims[p.cover.src]; return (d ? `--ar:${d[0]}/${d[1]};` : "") + (p.coverBg ? `background:${p.coverBg}` : ""); })()}">${media(p.cover, base, { parallax: p.coverFit ? 0 : 10, eager: true, style: coverStyle })}</div>
   ${p.detail === "ads" ? adsDetail() : ""}
   <section class="p-gallery"${p.gallery.length ? "" : " hidden"} aria-label="Project images">
     ${gallery}

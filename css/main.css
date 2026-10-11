@@ -90,6 +90,30 @@ html.lenis, html.lenis body { height: auto; }
 }
 .mono { font-family: var(--f-mono); }
 
+/* Brush-written characters: a soft ink edge sweeps down each glyph (driven by --ink from JS) */
+.ink {
+  display: inline-block;
+  --ink: 0%;
+  -webkit-mask-image: linear-gradient(172deg, #000 42%, transparent 58%);
+          mask-image: linear-gradient(172deg, #000 42%, transparent 58%);
+  -webkit-mask-size: 100% 300%;
+          mask-size: 100% 300%;
+  -webkit-mask-position: 0 var(--ink);
+          mask-position: 0 var(--ink);
+}
+
+/* Ink-bleed image reveals: an ink pool mask blooms open from a point (driven by --blot from JS) */
+.is-inking {
+  -webkit-mask-image: url(../assets/brand/ink-blot.png);
+          mask-image: url(../assets/brand/ink-blot.png);
+  -webkit-mask-repeat: no-repeat;
+          mask-repeat: no-repeat;
+  -webkit-mask-position: var(--ox, 50%) var(--oy, 50%);
+          mask-position: var(--ox, 50%) var(--oy, 50%);
+  -webkit-mask-size: var(--blot, 0%) var(--blot, 0%);
+          mask-size: var(--blot, 0%) var(--blot, 0%);
+}
+
 /* Split helpers (populated by JS) */
 .line-mask { display: block; overflow: hidden; padding: 0.2em 0.12em 0.16em; margin: -0.2em -0.12em -0.16em; }
 .line-inner { display: block; will-change: transform; }
@@ -239,18 +263,18 @@ html.lenis, html.lenis body { height: auto; }
 .loader__count { font-variant-numeric: tabular-nums; }
 .no-loader .loader { display: none; }
 
-/* Page transition curtain */
-.curtain {
-  position: fixed;
-  inset: 0;
-  z-index: 90;
-  background: var(--c-slate);
-  pointer-events: none;
-  transform: translateY(100%);
-}
-.js .curtain { transform: none; }
+/* Page transition: two ink layers (pale wash, then slate) with brushy edges */
+.curtain { position: fixed; inset: 0; z-index: 90; pointer-events: none; }
+.curtain__layer { position: absolute; inset: 0; transform: translateY(118%); will-change: transform; }
+.curtain__wash { background: #8d9cab; color: #8d9cab; }
+.curtain__ink { background: var(--c-slate); color: var(--c-slate); }
+.curtain__edge { position: absolute; left: -2%; width: 104%; height: 14vh; fill: currentColor; filter: url(#ink-edge); }
+.curtain__edge--top { bottom: calc(100% - 1px); }
+.curtain__edge--bottom { top: calc(100% - 1px); transform: scaleY(-1); }
+.js .curtain__layer { transform: none; }
+.curtain__cn { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); color: var(--c-gold); font-size: clamp(4rem, 10vw, 7rem); display: flex; gap: 0.08em; opacity: 0; }
+.curtain__cn > span { display: block; }
 .js .curtain .curtain__cn { opacity: 1; }
-.curtain__cn { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); color: var(--c-gold); font-size: clamp(4rem, 10vw, 7rem); opacity: 0; }
 
 /* ---------- Cursor ---------- */
 .cursor {
@@ -768,6 +792,9 @@ html.lenis, html.lenis body { height: auto; }
 }
 .footer__base { display: flex; justify-content: space-between; gap: 12px 24px; flex-wrap: wrap; margin-top: 28px; color: var(--c-fog); }
 @media (max-width: 760px) {
+  /* Phones (and larger system font sizes): smaller, with a gap, and 秋叶 wraps instead of being cut off */
+  .footer__wordmark { font-size: 11vw; flex-wrap: wrap; justify-content: flex-start; gap: 0.12em 0.22em; white-space: normal; }
+  .footer__wordmark .brush { white-space: nowrap; }
   .footer__cta .label, .footer__big, .footer__mail, .footer__btn { grid-column: 1 / -1; }
   .footer__col { grid-column: span 6; }
 }
