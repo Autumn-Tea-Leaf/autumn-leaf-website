@@ -269,7 +269,35 @@ html.lenis, html.lenis body { height: auto; }
   will-change: transform;
 }
 .cursor span { font-family: var(--f-mono); font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; }
-@media (hover: none), (pointer: coarse) { .cursor { display: none; } }
+/* Follower dot: ink on light sections, white on dark ones, grows into a ring over links */
+.dot {
+  position: fixed;
+  left: 0; top: 0;
+  z-index: 79;
+  pointer-events: none;
+  width: 40px; height: 40px;
+  margin: -20px 0 0 -20px;
+  border-radius: 50%;
+  color: var(--c-ink);
+  opacity: 0;
+  will-change: transform;
+}
+.dot::before {
+  content: "";
+  position: absolute; inset: 0;
+  border-radius: 50%;
+  background: currentColor;
+  border: 1px solid currentColor;
+  transform: scale(0.2);
+  transition: transform 0.45s var(--ease-out), background-color 0.3s, border-color 0.3s;
+}
+.dot.is-link::before { transform: scale(1); background: transparent; }
+.dot.is-down::before { transform: scale(0.14); }
+.dot.is-link.is-down::before { transform: scale(0.8); }
+.dot.is-hidden::before { transform: scale(0); }
+.dot.on-dark { color: var(--c-white); }
+.dot { transition: color 0.3s; }
+@media (hover: none), (pointer: coarse) { .cursor, .dot { display: none; } }
 
 /* ---------- Hero ---------- */
 .hero { position: relative; height: 260vh; background: var(--c-mist); }

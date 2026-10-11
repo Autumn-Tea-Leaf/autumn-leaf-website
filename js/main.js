@@ -529,12 +529,37 @@
     const xTo = gsap.quickTo(cursor, "x", { duration: 0.5, ease: "power3" });
     const yTo = gsap.quickTo(cursor, "y", { duration: 0.5, ease: "power3" });
     window.addEventListener("pointermove", (e) => { xTo(e.clientX); yTo(e.clientY); });
+    const dot = $(".dot");
     $$("[data-cursor]").forEach((el) => {
       el.addEventListener("pointerenter", () => {
         label.textContent = el.dataset.cursor;
         gsap.to(cursor, { scale: 1, duration: 0.6 });
+        if (dot) dot.classList.add("is-hidden");
       });
-      el.addEventListener("pointerleave", () => gsap.to(cursor, { scale: 0, duration: 0.5 }));
+      el.addEventListener("pointerleave", () => {
+        gsap.to(cursor, { scale: 0, duration: 0.5 });
+        if (dot) dot.classList.remove("is-hidden");
+      });
+    });
+    if (!dot) return;
+
+    // Follower dot
+    const dx = gsap.quickTo(dot, "x", { duration: 0.35, ease: "power3" });
+    const dy = gsap.quickTo(dot, "y", { duration: 0.35, ease: "power3" });
+    let shown = false;
+    window.addEventListener("pointermove", (e) => {
+      dx(e.clientX); dy(e.clientY);
+      if (!shown) { gsap.set(dot, { x: e.clientX, y: e.clientY }); gsap.to(dot, { opacity: 1, duration: 0.3 }); shown = true; }
+    });
+    document.documentElement.addEventListener("pointerleave", () => { gsap.to(dot, { opacity: 0, duration: 0.3 }); shown = false; });
+    window.addEventListener("pointerdown", () => dot.classList.add("is-down"));
+    window.addEventListener("pointerup", () => dot.classList.remove("is-down"));
+    const interactive = "a, button, label, select, input, textarea, [role='button']";
+    document.addEventListener("pointerover", (e) => {
+      const hit = e.target.closest(interactive);
+      dot.classList.toggle("is-link", !!hit && !hit.closest("[data-cursor]"));
+      const hero = e.target.closest("[data-hero]");
+      dot.classList.toggle("on-dark", !!e.target.closest("[data-header='light']") || (!!hero && !!header && header.classList.contains("is-light")));
     });
   }
 

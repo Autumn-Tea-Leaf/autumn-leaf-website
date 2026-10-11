@@ -564,7 +564,8 @@ function header(base, current) {
   </div>
 </div>
 <div class="curtain" aria-hidden="true"><span class="curtain__cn brush">秋叶</span></div>
-<div class="cursor" aria-hidden="true"><span>View</span></div>`;
+<div class="cursor" aria-hidden="true"><span>View</span></div>
+<div class="dot" aria-hidden="true"></div>`;
 }
 
 function footer(base, label = "(05) Contact", onContact = false) {
