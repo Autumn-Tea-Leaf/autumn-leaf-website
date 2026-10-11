@@ -159,9 +159,10 @@ const PROJECTS = [
     slug: "moon-son",
     title: "Moon + Son",
     kind: "Wool & crochet store",
-    year: 2024,
+    year: 2022,
     disciplines: ["Web design", "Illustration"],
     cats: ["digital", "image"],
+    credits: "Andy Ou, Tatyana Banda",
     intro: "A landing page for Moon + Son, a wool and crochet store in Craighall Park. The line: patch it up with us.",
     body: "Soft greys and a warm yarn yellow carry the store’s logo through the whole page. A single strand of yarn winds from section to section, past balls of wool, a patchwork cat in a knitted scarf, a quilted doll and other hand-drawn crochet characters, ending at the shop’s location and a Join Us call to action.",
     cover: { type: "image", src: "assets/work/moon-son/cover.webp", alt: "Moon + Son illustrations: a patchwork cat, a quilted doll and a knitted figure" },
@@ -185,6 +186,7 @@ const PROJECTS = [
     disciplines: ["Campaign", "Pixel art", "Social media"],
     cats: ["branding", "digital"],
     award: "3rd place, Comic Con Africa design competition",
+    client: "Comic Con Africa (competition brief)",
     coverFit: "contain",
     coverBg: "#000",
     intro: "A retro arcade campaign for Comic Con Johannesburg, which placed third in the Comic Con Africa design competition.",
@@ -200,6 +202,7 @@ const PROJECTS = [
       img("comic-con/07", "The five pixel characters as stickers"),
       img("comic-con/09", "QR codes with a character in each"),
       img("comic-con/03", "We look forward to seeing you"),
+      img("comic-con/africa-logo", "Comic Con Africa, who ran the design competition"),
     ],
   },
   {
@@ -807,7 +810,8 @@ function projectPage(p, i) {
     }
     const d = dims[m.src];
     const portrait = d && d[1] > d[0] && d[1] / d[0] < 2;
-    return `<figure${portrait ? ' class="is-portrait"' : ""} data-fade>${media(m, base)}</figure>`;
+    const small = d && d[0] < 900 ? ` style="max-width:${d[0]}px"` : "";
+    return `<figure${portrait ? ' class="is-portrait"' : ""}${small} data-fade>${media(m, base)}</figure>`;
   }).join("\n    ");
 
   return `${head({
