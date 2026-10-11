@@ -699,6 +699,7 @@ ${header(base, "")}
     </div>
     <div class="grid featured__list">${featured}
     </div>
+    <div class="featured__more" data-fade><a class="pill" href="#index">View all ${PROJECTS.length} projects <span class="arrow">→</span></a></div>
   </section>
 
   <section class="principles" data-horizontal data-header="light" aria-label="Principles">
