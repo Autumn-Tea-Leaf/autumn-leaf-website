@@ -626,5 +626,53 @@
   "assets/work/paid-advertising/thumb.webp": [
     1600,
     1200
+  ],
+  "assets/brand/og.jpg": [
+    1200,
+    630
+  ],
+  "assets/work/playbook/thumb.webp": [
+    1600,
+    1200
+  ],
+  "assets/work/manini/thumb.webp": [
+    1200,
+    1500
+  ],
+  "assets/work/comic-con/thumb.webp": [
+    1200,
+    1500
+  ],
+  "assets/work/mr-d/thumb.webp": [
+    1200,
+    1500
+  ],
+  "assets/work/durex/thumb.webp": [
+    1080,
+    1350
+  ],
+  "assets/work/discord-ad/thumb.webp": [
+    1200,
+    1500
+  ],
+  "assets/work/netflix-together/thumb.webp": [
+    1200,
+    1500
+  ],
+  "assets/work/zukae/thumb.webp": [
+    1200,
+    1500
+  ],
+  "assets/work/atelier-c/thumb.webp": [
+    1200,
+    1500
+  ],
+  "assets/work/yoko/thumb.webp": [
+    1200,
+    1500
+  ],
+  "assets/work/moon-son/thumb.webp": [
+    1200,
+    1500
   ]
 }

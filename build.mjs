@@ -71,7 +71,7 @@ const PROJECTS = [
     intro: "Zukae is a brutalist-inspired instant noodle concept built on contrast, silence and hunger. Restraint, then release.",
     body: "Stark design, flash photography and heavy visual minimalism carry raw emotion. “Silence is heavy. Hunger breaks you.” Each visual explores the tension between control and chaos, turning a cup of noodles into a symbol of craving, pressure and power.",
     cover: vid("zukae/01", "Zukae wordmark over a black-and-white cityscape"),
-    thumb: "assets/work/zukae/01-poster.webp",
+    thumb: "assets/work/zukae/thumb.webp",
     gallery: [
       img("zukae/02", "Zukae brand guidelines board"),
       vid("zukae/03", "Zukae typography"),
@@ -93,7 +93,7 @@ const PROJECTS = [
     intro: "YOKŌ is a premium ceremonial-grade matcha brand that embodies quiet refinement and timeless tradition.",
     body: "Rooted in Japanese heritage yet designed for the modern world, the identity balances minimal elegance with cultural depth. From the gold-accented canister to the poetic kanji, every detail reflects stillness, presence and enduring craft.",
     cover: img("yoko/05", "Yokō logo applied across green matcha imagery"),
-    thumb: "assets/work/yoko/05.webp",
+    thumb: "assets/work/yoko/thumb.webp",
     gallery: [
       img("yoko/01", "Yokō visual identity board"),
       vid("yoko/02", "Yokō colour palette"),
@@ -116,7 +116,7 @@ const PROJECTS = [
     intro: "Atelier C is a premium chocolate brand: bold, modern flavours alongside timeless classics.",
     body: "Hand-drawn illustrations and refined details bring personality to every bar and box. From vibrant slabs to artisanal milk and dark chocolate, the identity blends luxury, craft and approachability for a memorable presence on the shelf and in the hand.",
     cover: img("atelier-c/03", "Atelier C storefront with illuminated sign"),
-    thumb: "assets/work/atelier-c/03.webp",
+    thumb: "assets/work/atelier-c/thumb.webp",
     gallery: [
       vid("atelier-c/01", "Atelier C animated logo with chocolates"),
       img("atelier-c/02", "Atelier C concept and brief"),
@@ -144,7 +144,7 @@ const PROJECTS = [
     intro: "Manini Selection brings wine and art together. Every bottle carries the work of a South African artist.",
     body: "I built the site for the client in 2025 as a home for the whole brand: the story behind it, profiles of each featured artist, events, the Art & Wine Club, and shops for both wine and art. A dark, gallery-like frame with warm gold and playful geometric accents keeps the artwork at the centre, and every page works just as well on a phone.",
     cover: img("manini/01", "Manini Selection homepage: guests with wine glasses in a gallery, Welcome to Manini"),
-    thumb: "assets/work/manini/01.webp",
+    thumb: "assets/work/manini/thumb.webp",
     gallery: [
       img("manini/02", "About Manini section with a couple sharing wine"),
       img("manini/03", "The Manini values, spelled out letter by letter"),
@@ -168,7 +168,7 @@ const PROJECTS = [
     body: "Soft greys and a warm yarn yellow carry the store’s logo through the whole page. A single strand of yarn winds from section to section, past balls of wool, a patchwork cat in a knitted scarf, a quilted doll and other hand-drawn crochet characters, ending at the shop’s location and a Join Us call to action.",
     cover: { type: "image", src: "assets/work/moon-son/cover.webp", alt: "Moon + Son illustrations: a patchwork cat, a quilted doll and a knitted figure" },
     coverFit: "contain",
-    thumb: "assets/work/moon-son/cover.webp",
+    thumb: "assets/work/moon-son/thumb.webp",
     gallery: [
       img("moon-son/01", "Moon + Son landing page design"),
       img("moon-son/02", "Moon + Son logo"),
@@ -193,7 +193,7 @@ const PROJECTS = [
     intro: "A retro arcade campaign for Comic Con Johannesburg, which placed third in the Comic Con Africa design competition.",
     body: "Five pixel characters, a cat, a ghost, a TV, a game console and an alien, lead the whole campaign. Each one fronts a different part of the show (comics, cosplay, anime and K-pop, gaming, TV and movies) and appears across an Instagram series, a ticket, QR codes, stickers, an arcade cabinet and a digital leaderboard. The message to every visitor: begin quest.",
     cover: { type: "image", src: "assets/work/comic-con/cover.webp", alt: "Comic Con Johannesburg logo with five pixel-art characters on black" },
-    thumb: "assets/work/comic-con/02.webp",
+    thumb: "assets/work/comic-con/thumb.webp",
     gallery: [
       img("comic-con/01", "Comic Con Instagram campaign mockup"),
       img("comic-con/06", "Comic Con Spring 2023 ticket"),
@@ -235,7 +235,7 @@ const PROJECTS = [
     body: "We reviewed the app against Nielsen’s ten usability heuristics, built personas and ran usability tests. The redesign answers what we found. A calmer home screen leads with Your Recently Purchased and Discover Foods Weekly, cuisines filter restaurants in one tap, and Hot Deals keeps specials easy to find. Paying works with a saved card and its CVV instead of an OTP, a 24/7 Help Bot answers questions about food or the app, and the whole interface switches language, defaulting to the phone’s own.",
     cover: img("mr-d/cover", "Redesigned Mr D app on two phones"),
     coverFit: "contain",
-    thumb: "assets/work/mr-d/cover.webp",
+    thumb: "assets/work/mr-d/thumb.webp",
     gallery: [
       img("mr-d/02", "Ordering flow: home, Discover Foods Weekly, restaurant favourites, customising a pizza and paying with CVV"),
       img("mr-d/03", "Filtering flow: cuisines, chicken restaurants and specials"),
@@ -255,7 +255,7 @@ const PROJECTS = [
     intro: "A Durex and Sexpo campaign that sets out to make sex feel less like a taboo and more like a conversation.",
     body: "Our research looked at the physical and functional barriers that stop people living freely: cultural taboos, shame, a lack of sex education, poor communication, and the way people with disabilities are often treated as if they have no sexuality at all. Sex Uncensored answers with humour and openness. A short ad tells viewers to pull the norm and find sexual freedom at the Sexpo, while the wider campaign adds a public sculpture built from personalised condom wrappers, QR posters that lead to a microsite, a magazine on sexual identity and a limited edition condom.",
     cover: { type: "video", src: "assets/work/durex/loop.mp4", poster: "assets/work/durex/loop-poster.webp", alt: "Sex Uncensored ad: pull the norm, sexual freedom at the Sexpo" },
-    thumb: "assets/work/durex/loop-poster.webp",
+    thumb: "assets/work/durex/thumb.webp",
     gallery: [
       { type: "film", src: "assets/work/durex/ad.mp4", poster: "assets/work/durex/ad-poster.webp", alt: "Sex Uncensored, the full ad with sound" },
       img("durex/01", "Sex Uncensored brag board: magazine, packaging, posters and billboard"),
@@ -280,7 +280,7 @@ const PROJECTS = [
     cover: img("netflix-together/cover", "Netflix Together on a TV: experience Netflix differently"),
     coverFit: "contain",
     coverBg: "#f3c4ee",
-    thumb: "assets/work/netflix-together/cover.webp",
+    thumb: "assets/work/netflix-together/thumb.webp",
     gallery: [
       img("netflix-together/01", "Netflix Together intro screen"),
       img("netflix-together/02", "Watch together no matter where you are"),
@@ -302,7 +302,7 @@ const PROJECTS = [
     intro: "An animated spot for Discord that highlights the platform’s engaging, slightly addictive nature.",
     body: "Hand-drawn frames and smooth timing capture Discord’s playful environment and the community it builds, showing simply how it brings people together in a fun and interactive way.",
     cover: { type: "image", src: "assets/work/discord-ad/cover.webp", alt: "Frame from the Discord animated ad" },
-    thumb: "assets/work/discord-ad/cover.webp",
+    thumb: "assets/work/discord-ad/thumb.webp",
     gallery: [
       { type: "film", src: "assets/video/discord-ad.mp4", poster: "assets/work/discord-ad/cover.webp", alt: "Discord ad, full film" },
       img("discord-ad/01", "Discord ad objective, idea and scamps"),
@@ -406,7 +406,7 @@ const PROJECTS = [
     intro: "The brand identity playbook behind Autumn Leaf: timeless simplicity, inspired by the quiet elegance of Chinese vases and pottery.",
     body: "It sets out the manifesto, mission and vision, a user persona, the positioning statement and brand promise, the customer journey and the tone of voice, then a full style guide: the logo, the slate, mist and gold palette, Montserrat and Courier New, icons, collateral mockups, 3D models of an exhibition stand and an animated logo.",
     cover: img("playbook/01", "Autumn Leaf Brand Identity Playbook cover"),
-    thumb: "assets/work/playbook/01.webp",
+    thumb: "assets/work/playbook/thumb.webp",
     gallery: [
       img("playbook/02", "Autumn Leaf Brand Identity Playbook, page 2"),
       img("playbook/03", "Autumn Leaf Brand Identity Playbook, page 3"),
@@ -500,7 +500,7 @@ function media(m, base, { parallax = 0, eager = false, style = "" } = {}) {
 }
 
 /* ---------------- shared chrome ---------------- */
-function head({ title, desc, base, path, image = "assets/brand/porcelain.webp" }) {
+function head({ title, desc, base, path, image = "assets/brand/og.jpg" }) {
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -515,6 +515,9 @@ function head({ title, desc, base, path, image = "assets/brand/porcelain.webp" }
 <meta property="og:description" content="${esc(desc)}">
 <meta property="og:url" content="${SITE}/${path}">
 <meta property="og:image" content="${SITE}/${image}">
+<meta property="og:image:alt" content="${esc(title)}">${dims[image] ? `
+<meta property="og:image:width" content="${dims[image][0]}">
+<meta property="og:image:height" content="${dims[image][1]}">` : ""}
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/png" href="${base}assets/brand/favicon.png">
 <link rel="preload" href="${base}assets/fonts/montserrat-latin.woff2" as="font" type="font/woff2" crossorigin>
