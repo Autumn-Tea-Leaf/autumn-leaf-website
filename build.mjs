@@ -199,6 +199,7 @@ const PROJECTS = [
       img("comic-con/04", "Comic Con arcade cabinet"),
       img("comic-con/05", "Digital leaderboard on a street display"),
       img("comic-con/08", "Sub-brand logos for comics, cosplay, and anime and K-pop"),
+      img("comic-con/10", "Sub-brand logos for gaming, and TV and movies"),
       img("comic-con/07", "The five pixel characters as stickers"),
       img("comic-con/09", "QR codes with a character in each"),
       img("comic-con/03", "We look forward to seeing you"),
