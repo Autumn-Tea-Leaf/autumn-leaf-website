@@ -577,8 +577,9 @@ ${header(base, "")}
     </div>
     <div class="grid about__grid">
       <div class="about__visual" data-speed="0.92">
-        <div class="about__frame" data-clip><video data-parallax-media="8" src="assets/brand/logo-animation.mp4" poster="assets/brand/logo-animation-poster.webp" width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="Autumn Leaf logo animation: the leaf mark blooms out of ink"></video></div>
-        <span class="about__caption label label--muted">Logo animation, Autumn Leaf identity</span>
+        <div class="about__frame about__frame--portrait"><img src="assets/brand/andy-portrait.webp"${wh("assets/brand/andy-portrait.webp")} alt="Andy Ou holding a camera, with 秋叶 brushed in blue beside him" loading="lazy"></div>
+        <div class="about__film" data-speed="0.82"><video src="assets/brand/logo-animation.mp4" poster="assets/brand/logo-animation-poster.webp" width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="Autumn Leaf logo animation: the leaf mark blooms out of ink"></video></div>
+        <span class="about__caption label label--muted">Andy Ou, founder of Autumn Leaf</span>
       </div>
       <div class="about__body">
         <div class="about__copy">
