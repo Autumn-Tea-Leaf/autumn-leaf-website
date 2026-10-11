@@ -93,6 +93,9 @@ html.lenis, html.lenis body { height: auto; }
 /* Brush-written characters: a soft ink edge sweeps down each glyph (driven by --ink from JS) */
 .ink {
   display: inline-block;
+  /* Brush glyphs overflow their em box, so pad the masked area and pull it back with negative margin */
+  padding: 0.35em 0.3em;
+  margin: -0.35em -0.3em;
   --ink: 0%;
   -webkit-mask-image: linear-gradient(172deg, #000 42%, transparent 58%);
           mask-image: linear-gradient(172deg, #000 42%, transparent 58%);
@@ -101,6 +104,7 @@ html.lenis, html.lenis body { height: auto; }
   -webkit-mask-position: 0 var(--ink);
           mask-position: 0 var(--ink);
 }
+.ink.is-inked { -webkit-mask-image: none; mask-image: none; }
 
 /* Ink-bleed image reveals: an ink pool mask blooms open from a point (driven by --blot from JS) */
 .is-inking {

@@ -528,6 +528,7 @@
         duration: 1.4, stagger: 0.32, ease: "power2.inOut",
         delay: inView ? 0.9 : 0, // wait for the page transition to lift
         scrollTrigger: st,
+        onComplete: () => chars.forEach((s) => { s.classList.add("is-inked"); s.style.filter = ""; }),
       });
     });
   }
