@@ -4,11 +4,12 @@
 // No dependencies. Output is plain HTML that GitHub Pages can serve as-is.
 
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
+import { COUNTRIES } from "./countries.mjs";
 
 const SITE = "https://autumnleafdesigns.co.za";
 const EMAIL = "autumnleafdesignstudio@gmail.com";
 // Contact form submissions are emailed here through FormSubmit (formsubmit.co).
-const FORM_TO = "andy.ou987@gmail.com";
+const FORM_TO = "autumnleafdesignstudio@gmail.com";
 // WhatsApp fallback shown if the form can't send (international format, no +).
 const WHATSAPP = "27614420425";
 const WHATSAPP_DISPLAY = "061 442 0425";
@@ -725,6 +726,18 @@ ${header(base, "contact")}
         <span class="field__error" data-error-for="email"></span>
       </div>
       <div class="field">
+        <label class="label" for="f-phone">Phone <span class="label--muted">(optional)</span></label>
+        <div class="phone">
+          <select id="f-country" name="country" aria-label="Country code" autocomplete="tel-country-code">
+            <option value="ZA|27" selected>South Africa +27</option>
+            <option disabled>──────────</option>
+            ${COUNTRIES.map(([iso, n, d]) => `<option value="${iso}|${d}">${esc(n)} +${d}</option>`).join("")}
+          </select>
+          <input id="f-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel-national" placeholder="61 234 5678">
+        </div>
+        <span class="field__error" data-error-for="phone"></span>
+      </div>
+      <div class="field">
         <label class="label" for="f-message">Tell me about the project</label>
         <textarea id="f-message" name="message" required></textarea>
         <span class="field__error" data-error-for="message"></span>
@@ -762,7 +775,7 @@ function privacyPage() {
     ["Who I am", `This site belongs to Andy Ou, trading as Autumn Leaf Design Studio, based in Johannesburg, South Africa. For anything about your personal information, email <a href="mailto:${EMAIL}">${EMAIL}</a>.`],
     ["What this site collects", "Nothing in the background. There are no cookies, no analytics and no advertising trackers. Fonts and scripts are served from this site rather than from outside services. Like every website, the hosting provider (GitHub Pages) briefly logs technical details such as IP addresses to keep the service secure."],
     ["Browser storage", "The site saves one small note in your browser so the intro animation only plays once per visit. It is not a cookie, it is never sent anywhere, and it clears itself when you close the tab."],
-    ["The contact form", "When you send the contact form, your name, email address, the type of project and your message are emailed to me through FormSubmit (formsubmit.co), a service that forwards form messages to my inbox. Nothing is stored on this site itself."],
+    ["The contact form", "When you send the contact form, your name, email address, phone number (if you add one), the type of project and your message are emailed to me through FormSubmit (formsubmit.co), a service that forwards form messages to my inbox. Nothing is stored on this site itself."],
     ["When you email me", "I receive your name, email address and whatever you choose to write. I use it only to reply and to work with you on your project. I never sell it or share it for marketing. I keep our emails for as long as we are working together and afterwards only as long as I need them for my records, and I will delete them sooner if you ask."],
     ["Third-party content", "The Vega project page includes a video player from Adobe (Behance), which may set its own cookies when it loads. Links to Behance, LinkedIn and Instagram take you to sites with their own privacy policies."],
     ["Your rights", `Under South Africa’s Protection of Personal Information Act (POPIA) you can ask to see the information I hold about you, have it corrected, or have it deleted. Just email me. If you are unhappy with how your information was handled, you can contact the <a href="https://inforegulator.org.za" target="_blank" rel="noopener">Information Regulator</a>.`],

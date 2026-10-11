@@ -784,6 +784,22 @@ html.lenis, html.lenis body { height: auto; }
 .field textarea { min-height: 140px; resize: vertical; }
 .field input:focus, .field textarea:focus, .field select:focus { outline: none; border-color: var(--c-slate); }
 .field input[aria-invalid="true"], .field textarea[aria-invalid="true"] { border-color: #a4473d; }
+.phone { display: grid; grid-template-columns: minmax(0, auto) minmax(0, 1fr); gap: 16px; align-items: end; }
+.phone select {
+  max-width: 13rem;
+  font-size: clamp(1rem, 1.4vw, 1.2rem);
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 22px;
+  background-image: linear-gradient(45deg, transparent 50%, currentColor 50%), linear-gradient(135deg, currentColor 50%, transparent 50%);
+  background-position: calc(100% - 9px) 55%, calc(100% - 4px) 55%;
+  background-size: 5px 5px;
+  background-repeat: no-repeat;
+  cursor: pointer;
+  text-overflow: ellipsis;
+}
+.phone input { min-width: 0; }
+@media (max-width: 420px) { .phone { grid-template-columns: minmax(0, 1fr); } .phone select { max-width: none; } }
 .field__error { color: #a4473d; font-family: var(--f-mono); font-size: 12px; min-height: 1em; }
 .chips { display: flex; flex-wrap: wrap; gap: 8px; }
 .chips input { position: absolute; opacity: 0; pointer-events: none; }

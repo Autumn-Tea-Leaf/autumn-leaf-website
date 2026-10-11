@@ -596,6 +596,11 @@
         form.elements.name.focus();
       });
     }
+    // Clear a field's error as soon as it's edited
+    ["name", "email", "phone", "message"].forEach((n) => {
+      const el = form.elements[n];
+      if (el) el.addEventListener("input", () => setErr(n, ""));
+    });
     // Arriving back after a no-JavaScript submission
     if (new URLSearchParams(location.search).get("sent") === "1") showThanks("", "");
     form.addEventListener("submit", async (e) => {
@@ -609,6 +614,12 @@
       const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
       setErr("email", emailOk ? "" : "Please add a valid email."); ok = ok && emailOk;
       setErr("message", message ? "" : "Tell me a little about the project."); ok = ok && !!message;
+      const phoneRaw = form.elements.phone ? form.elements.phone.value.trim() : "";
+      const dial = form.elements.country ? (form.elements.country.value.split("|")[1] || "") : "";
+      const digits = phoneRaw.replace(/[^\d]/g, "").replace(/^0+/, "");
+      const phoneOk = !phoneRaw || (/^[\d\s()+-]+$/.test(phoneRaw) && digits.length >= 6 && digits.length <= 14);
+      if (form.elements.phone) { setErr("phone", phoneOk ? "" : "Please check the number (digits only)."); ok = ok && phoneOk; }
+      const phone = phoneRaw && phoneOk ? `+${dial} ${digits}` : "";
       if (!ok) { status.textContent = ""; return; }
       if (form.elements._honey && form.elements._honey.value) return; // bot
 
@@ -628,6 +639,7 @@
             _replyto: email,
             Name: name,
             Email: email,
+            Phone: phone || "Not given",
             "Interested in": type,
             Message: message,
           }),
@@ -642,7 +654,7 @@
         btnText.textContent = "Send message";
         btn.disabled = false;
         const wa = form.dataset.whatsapp;
-        const text = `Hi Andy, I’m ${name} (${email}). I’m interested in: ${type}.
+        const text = `Hi Andy, I’m ${name} (${email}${phone ? ", " + phone : ""}). I’m interested in: ${type}.
 
 ${message}`;
         const link = document.createElement("a");
