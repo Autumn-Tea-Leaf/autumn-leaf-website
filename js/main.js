@@ -200,6 +200,13 @@
   const ink = curtain && $(".curtain__ink", curtain);
   const cnChars = curtain ? $$(".curtain__cn > span", curtain) : [];
   const layers = [wash, ink].filter(Boolean);
+  // Fully clear the curtain: colour layers off screen and the 秋叶 hidden.
+  const hideCurtain = () => {
+    if (!curtain) return;
+    gsap.set(layers, { yPercent: 118 });
+    gsap.set(".curtain__cn", { opacity: 0 });
+    if (cnChars.length) gsap.set(cnChars, { opacity: 0 });
+  };
   const disp = document.querySelector("#ink-edge feDisplacementMap");
   const bleed = (from, to, d) => { if (!disp) return; const o = { v: from }; gsap.to(o, { v: to, duration: d, ease: "power2.out", onUpdate: () => disp.setAttribute("scale", o.v.toFixed(1)) }); };
 
@@ -232,7 +239,7 @@
       });
     });
     // Leaving via back/forward cache: reset the curtain.
-    window.addEventListener("pageshow", (e) => { if (e.persisted) gsap.set(layers, { yPercent: 118 }); });
+    window.addEventListener("pageshow", (e) => { if (e.persisted) hideCurtain(); });
   }
 
   function curtainOut() {
@@ -266,7 +273,7 @@
       return curtainOut();
     }
     try { sessionStorage.setItem("al-loaded", "1"); } catch (_) { /* storage blocked */ }
-    if (curtain) gsap.set(layers, { yPercent: 118 });
+    hideCurtain();
     if (lenis) lenis.stop();
     const count = $(".loader__count", loader);
     const state = { v: 0 };
