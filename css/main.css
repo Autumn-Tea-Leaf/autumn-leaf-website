@@ -158,6 +158,9 @@ html.lenis, html.lenis body { height: auto; }
 .header__meta { grid-column: 5 / span 4; display: flex; gap: 28px; }
 .header__nav { grid-column: 9 / -1; display: flex; justify-content: flex-end; gap: 28px; }
 .header__time { font-variant-numeric: tabular-nums; }
+.header__meta > span { white-space: nowrap; }
+.header__rel { color: var(--c-slate); }
+@media (max-width: 1279px) { .header__rel { display: none; } }
 
 .link-roll { position: relative; display: inline-flex; overflow: hidden; white-space: nowrap; }
 .link-roll span { display: block; transition: transform 0.5s var(--ease-out); }
@@ -648,6 +651,33 @@ html.lenis, html.lenis body { height: auto; }
   .services li .mono { display: none; }
 }
 
+/* ---------- Paid advertising ---------- */
+.ads { background: var(--c-white); padding-block: clamp(72px, 9vw, 140px); }
+.services__link { color: inherit; text-decoration: none; }
+.services__link .arrow { display: inline-block; color: var(--c-gold); transition: transform 0.5s var(--ease-out); }
+.services__link:hover .arrow, .services__link:focus-visible .arrow { transform: translateX(4px); }
+.ads__grid { row-gap: 56px; align-items: start; }
+.ads__intro { grid-column: 1 / span 5; display: flex; flex-direction: column; gap: 40px; }
+.ads__offer { grid-column: 7 / -1; display: flex; flex-direction: column; align-items: flex-start; gap: 20px; }
+.ads__offer .services { align-self: stretch; margin-bottom: 16px; }
+.ads__offer .services li { grid-template-columns: 48px minmax(0, 1fr); }
+.ads__skills { display: flex; flex-direction: column; gap: 16px; }
+.tags { display: flex; flex-wrap: wrap; gap: 8px; }
+.tags li { font-family: var(--f-mono); font-size: 12px; letter-spacing: 0.02em; padding: 8px 14px; border: 1px solid var(--c-line); border-radius: 999px; color: var(--c-slate-deep); background: var(--c-mist); }
+.ads__how { margin-top: clamp(72px, 9vw, 140px); padding-top: clamp(28px, 3vw, 40px); border-top: 1px solid var(--c-line); }
+.ads__how-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 40px var(--col-gap); margin-top: 32px; }
+.ads__step .label { color: var(--c-gold); }
+.ads__step h3 { margin: 14px 0 10px; font-size: clamp(1.15rem, 1.6vw, 1.4rem); font-weight: 400; letter-spacing: -0.01em; line-height: 1.2; }
+.ads__step p { color: var(--c-ink-soft); }
+@media (max-width: 960px) {
+  .ads__intro, .ads__offer { grid-column: 1 / -1; }
+  .ads__how-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 560px) {
+  .ads__how-grid { grid-template-columns: minmax(0, 1fr); }
+  .ads__offer .services li { grid-template-columns: 36px minmax(0, 1fr); }
+}
+
 /* ---------- Marquee ---------- */
 .marquee { background: var(--c-mist); padding-block: clamp(40px, 6vw, 80px); overflow: hidden; border-top: 1px solid var(--c-line); }
 .marquee__track { display: flex; width: max-content; will-change: transform; }
@@ -736,6 +766,11 @@ html.lenis, html.lenis body { height: auto; }
 }
 .p-cover { position: relative; height: 92vh; height: 92svh; overflow: hidden; background: var(--c-fog); }
 .p-cover img, .p-cover video { position: absolute; inset: -12% 0; width: 100%; height: 124%; object-fit: cover; will-change: transform; }
+/* Phones: show the whole cover at its own shape instead of a tall crop */
+@media (max-width: 760px) {
+  .p-cover { height: auto; aspect-ratio: var(--ar, 16 / 9); max-height: 80svh; }
+  .p-cover img, .p-cover video { inset: 0 !important; height: 100% !important; transform: none !important; }
+}
 .p-gallery { background: var(--c-mist); padding: clamp(64px, 8vw, 120px) var(--gutter); display: flex; flex-direction: column; gap: clamp(16px, 2.4vw, 32px); align-items: center; }
 .p-gallery figure { width: 100%; max-width: 1400px; overflow: hidden; background: var(--c-fog); }
 .p-gallery figure img, .p-gallery figure video { width: 100%; }
@@ -831,7 +866,7 @@ html.lenis, html.lenis body { height: auto; }
   background: var(--c-white);
   overflow: hidden;
 }
-.c-thanks[hidden] { display: none; }
+.c-thanks[hidden], .p-gallery[hidden] { display: none; }
 .c-thanks:focus { outline: none; }
 .c-thanks__cn { position: absolute; right: clamp(16px, 3vw, 44px); top: 50%; transform: translateY(-50%); writing-mode: vertical-rl; white-space: nowrap; font-size: clamp(5rem, 9vw, 8.5rem); color: var(--c-gold); pointer-events: none; z-index: 0; }
 .c-thanks > :not(.c-thanks__cn) { position: relative; z-index: 1; }

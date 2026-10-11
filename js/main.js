@@ -163,7 +163,18 @@
     const els = $$("[data-clock]");
     if (!els.length) return;
     const fmt = new Intl.DateTimeFormat("en-GB", { hour: "2-digit", minute: "2-digit", timeZone: "Africa/Johannesburg" });
-    const tick = () => els.forEach((el) => (el.textContent = `${fmt.format(new Date())} SAST`));
+    // SAST is UTC+2 all year. Tell visitors elsewhere how far ahead or behind Johannesburg is.
+    const relative = () => {
+      const diff = 120 + new Date().getTimezoneOffset(); // minutes Johannesburg is ahead of the visitor
+      if (!diff) return "";
+      const m = Math.abs(diff), h = Math.floor(m / 60), r = m % 60;
+      return ` · ${h ? `${h}h` : ""}${h && r ? " " : ""}${r ? `${r}m` : ""} ${diff > 0 ? "ahead of" : "behind"} you`;
+    };
+    const rels = $$("[data-clock-rel]");
+    const tick = () => {
+      els.forEach((el) => (el.textContent = `${fmt.format(new Date())} SAST`));
+      rels.forEach((el) => (el.textContent = relative()));
+    };
     tick();
     setInterval(tick, 15000);
   }
@@ -603,6 +614,12 @@
     });
     // Arriving back after a no-JavaScript submission
     if (new URLSearchParams(location.search).get("sent") === "1") showThanks("", "");
+    // Preselect the interest chip from ?type=paid-advertising
+    const pre = new URLSearchParams(location.search).get("type");
+    if (pre) {
+      const chip = [...form.querySelectorAll('input[name="type"]')].find((r) => r.value.toLowerCase().replace(/\s+/g, "-") === pre);
+      if (chip) chip.checked = true;
+    }
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
       const name = form.elements.name.value.trim();

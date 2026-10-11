@@ -27,6 +27,7 @@ const CATS = {
   motion: "Motion",
   "3d": "3D & AR",
   image: "Image",
+  ads: "Ads",
 };
 
 // Gallery helpers: img("petali/02") → assets/work/petali/02.webp, vid("petali/01") → mp4 + poster
@@ -464,6 +465,19 @@ const PROJECTS = [
     thumb: "assets/work/i-love-you/cover.webp",
     gallery: [img("i-love-you/01", "I Love You illustration")],
   },
+  {
+    slug: "paid-advertising",
+    title: "Paid Advertising",
+    titleCn: "广告",
+    kind: "Service",
+    disciplines: ["Google Ads", "Meta Ads"],
+    cats: ["ads"],
+    detail: "ads",
+    intro: "Alongside design, I plan and manage paid advertising on Google Ads and Meta Ads. I handle the full cycle: campaign setup, budget planning, tracking, audience data, optimisation, and reporting.",
+    cover: img("paid-advertising/cover", "Paid Advertising, Google Ads and Meta Ads, with 广告 in gold brush"),
+    thumb: "assets/work/paid-advertising/thumb.webp",
+    gallery: [],
+  },
 ];
 
 const FEATURED = ["petali", "yoko", "atelier-c", "zukae"];
@@ -529,7 +543,7 @@ function header(base, current) {
   </a>
   <div class="header__meta label">
     <span>Digital design studio</span>
-    <span>Johannesburg <span class="header__time" data-clock></span></span>
+    <span>Johannesburg <span class="header__time" data-clock></span><span class="header__rel" data-clock-rel></span></span>
   </div>
   <nav class="header__nav label" aria-label="Primary">
     ${nav.map(([l, h, k]) => `<a class="link-roll" href="${h}"${current === k ? ' aria-current="page"' : ""}>${roll(l)}</a>`).join("\n    ")}
@@ -635,7 +649,7 @@ function indexPage() {
             <span class="row__title">${esc(p.title)}</span>
             <span class="row__disc label">${p.disciplines.join(" · ")}</span>
             <span class="row__collab label">${esc(p.kind)}</span>
-            <span class="row__year label">${p.year}</span>
+            <span class="row__year label">${p.year || ""}</span>
           </a>`).join("");
 
   const previews = PROJECTS.map((p) => `<img src="${p.thumb}" alt="" loading="lazy">`).join("");
@@ -767,6 +781,7 @@ ${header(base, "")}
           <li><span class="label">04</span><span>Motion &amp; animation</span><span class="mono">Ads · Characters</span></li>
           <li><span class="label">05</span><span>3D &amp; AR</span><span class="mono">Modelling · Experiences</span></li>
           <li><span class="label">06</span><span>Photography &amp; illustration</span><span class="mono">Editorial · Art</span></li>
+          <li><span class="label">07</span><span><a class="services__link" href="/work/paid-advertising">Paid advertising <span class="arrow">→</span></a></span><span class="mono">Google Ads · Meta Ads</span></li>
         </ul>
         <blockquote class="quote" data-fade>“To create timeless elegance with modern simplicity.”<cite class="label label--muted">The Autumn Leaf promise</cite></blockquote>
       </div>
@@ -786,12 +801,40 @@ ${scripts(base)}
 `;
 }
 
+// Body for the Paid Advertising service page (no gallery, no year).
+const adsDetail = () => `
+  <section class="ads wrap" aria-label="Paid advertising details">
+    <div class="grid ads__grid">
+      <div class="ads__intro">
+        <div class="ads__skills" data-fade>
+          <span class="label label--muted">Platforms and skills</span>
+          <ul class="tags">
+            ${["Google Ads", "Meta Ads", "Conversion tracking and Meta Pixel setup", "Customer Match and first-party audience data", "Budget planning and spend audits", "A/B testing and audience segmentation", "Performance reporting"].map((t) => `<li>${t}</li>`).join("")}
+          </ul>
+        </div>
+      </div>
+      <div class="ads__offer" data-fade>
+        <span class="label label--muted">What I can do for you</span>
+        <ul class="services">
+          ${["Set up and structure campaigns so budget goes where it performs", "Audit existing accounts to find wasted spend and budget drift", "Install and fix tracking, including on platforms without native support", "Clean and prepare customer lists for audience targeting", "Report on results in plain language"].map((t, i) => `<li><span class="label">${pad(i + 1)}</span><span>${t}</span></li>`).join("")}
+        </ul>
+        <a class="pill" href="/contact?type=paid-advertising">Talk about your ads <span class="arrow">→</span></a>
+      </div>
+    </div>
+    <div class="ads__how">
+      <span class="label label--muted">How I work</span>
+      <div class="ads__how-grid">
+        ${[["Budgets first", "Every campaign ties back to a plan, and I check the two against each other regularly."], ["Clean data in, better targeting out", "Tracking and audience lists get fixed before spend goes up."], ["Test, then shift budget", "Results decide where money moves."], ["Clear communication", "Straight answers on spend and performance."]].map(([h, t], i) => `<div class="ads__step" data-fade="${i * 0.08}"><span class="label">${pad(i + 1)}</span><h3>${h}</h3><p>${t}</p></div>`).join("")}
+      </div>
+    </div>
+  </section>`;
+
 function projectPage(p, i) {
   const base = "../";
   const next = PROJECTS[(i + 1) % PROJECTS.length];
   const coverStyle = [p.coverPosition ? `object-position:${p.coverPosition}` : "", p.coverFit ? `object-fit:${p.coverFit};background:${p.coverBg || "var(--c-white)"};inset:0;height:100%` : ""].filter(Boolean).join(";");
   const meta = [
-    ["Year", p.year],
+    p.year ? ["Year", p.year] : null,
     ["Discipline", p.disciplines.join(", ")],
     ["Type", p.kind],
     p.credits ? ["Credits", p.credits] : null,
@@ -818,7 +861,7 @@ function projectPage(p, i) {
 
   return `${head({
     title: `${p.title} | ${p.disciplines.join(", ")} | Autumn Leaf`,
-    desc: `${p.intro} A ${p.year} project by Andy Ou / Autumn Leaf.`,
+    desc: `${p.intro} ${p.year ? `A ${p.year} project` : "A service"} by Andy Ou / Autumn Leaf.`,
     base, path: `work/${p.slug}`, image: p.thumb,
   })}
 <body>
@@ -840,11 +883,12 @@ ${header(base, "work")}
       </dl>
     </div>
   </section>
-  <div class="p-cover"${p.coverBg ? ` style="background:${p.coverBg}"` : ""}>${media(p.cover, base, { parallax: p.coverFit ? 0 : 10, eager: true, style: coverStyle })}</div>
-  <section class="p-gallery" aria-label="Project images">
+  <div class="p-cover" style="${(() => { const d = dims[p.cover.src]; return (d ? `--ar:${d[0]}/${d[1]};` : "") + (p.coverBg ? `background:${p.coverBg}` : ""); })()}">${media(p.cover, base, { parallax: p.coverFit ? 0 : 10, eager: true, style: coverStyle })}</div>
+  ${p.detail === "ads" ? adsDetail() : ""}
+  <section class="p-gallery"${p.gallery.length ? "" : " hidden"} aria-label="Project images">
     ${gallery}
     <div class="p-gallery__note label">
-      <span>${esc(p.title)}, ${p.year}</span>
+      <span>${esc(p.title)}${p.year ? `, ${p.year}` : ""}</span>
       ${(() => { if (!p.live && !p.behance) return ""; const [href, text] = p.live ? [p.live, "Visit the live site ↗"] : [p.behance, "Full case study on Behance ↗"]; return `<a class="link-roll" href="${href}" target="_blank" rel="noopener"><span>${text}</span><span aria-hidden="true">${text}</span></a>`; })()}
     </div>
   </section>
@@ -863,7 +907,7 @@ ${scripts(base)}
 
 function contactPage() {
   const base = "";
-  const types = ["Brand identity", "Packaging", "Website", "Motion", "Something else"];
+  const types = ["Brand identity", "Packaging", "Website", "Motion", "Paid advertising", "Something else"];
   return `${head({
     title: "Contact | Autumn Leaf",
     desc: "Start a project with Autumn Leaf. Brand identity, packaging, websites and motion by Andy Ou, Johannesburg.",
@@ -928,7 +972,7 @@ ${header(base, "contact")}
     <dl class="c-aside" data-fade>
       <div><dt class="label">Email</dt><dd><a href="mailto:${EMAIL}">${EMAIL}</a></dd></div>
       <div><dt class="label">Based in</dt><dd>Johannesburg, South Africa</dd></div>
-      <div><dt class="label">Local time</dt><dd data-clock></dd></div>
+      <div><dt class="label">Local time</dt><dd><span data-clock></span><span data-clock-rel></span></dd></div>
       <div><dt class="label">Elsewhere</dt><dd>${SOCIAL.map(([l, h]) => `<a href="${h}" target="_blank" rel="noopener">${l}</a>`).join(" · ")}</dd></div>
     </dl>
   </div>
