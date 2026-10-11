@@ -9,6 +9,9 @@ const SITE = "https://autumnleafdesigns.co.za";
 const EMAIL = "autumnleafdesignstudio@gmail.com";
 // Contact form submissions are emailed here through FormSubmit (formsubmit.co).
 const FORM_TO = "andy.ou987@gmail.com";
+// WhatsApp fallback shown if the form can't send (international format, no +).
+const WHATSAPP = "27614420425";
+const WHATSAPP_DISPLAY = "061 442 0425";
 const dims = existsSync("assets/dims.json") ? JSON.parse(readFileSync("assets/dims.json", "utf8")) : {};
 
 const SOCIAL = [
@@ -699,7 +702,7 @@ ${header(base, "contact")}
   <span class="label label--muted">(秋叶) Contact</span>
   <h1 class="c-page__title display" data-lines>Get in touch for a project <span class="brush">秋叶</span></h1>
   <div class="grid c-grid">
-    <form class="c-form" data-contact-form novalidate method="POST" action="https://formsubmit.co/${FORM_TO}" data-endpoint="https://formsubmit.co/ajax/${FORM_TO}">
+    <form class="c-form" data-contact-form data-whatsapp="${WHATSAPP}" data-whatsapp-display="${WHATSAPP_DISPLAY}" novalidate method="POST" action="https://formsubmit.co/${FORM_TO}" data-endpoint="https://formsubmit.co/ajax/${FORM_TO}">
       <input type="hidden" name="_subject" value="New enquiry from autumnleafdesigns.co.za">
       <input type="hidden" name="_template" value="table">
       <input type="hidden" name="_captcha" value="false">
@@ -729,6 +732,14 @@ ${header(base, "contact")}
       <button class="pill" type="submit"><span class="pill__text">Send message</span> <span class="arrow">→</span></button>
       <p class="form-status" role="status" aria-live="polite"></p>
     </form>
+    <div class="c-thanks" data-thanks hidden tabindex="-1">
+      <span class="c-thanks__cn brush" aria-hidden="true">谢谢</span>
+      <span class="label label--muted">(秋叶) Message sent</span>
+      <h2 class="c-thanks__title">Thank you<span data-thanks-name></span>.</h2>
+      <p class="lede">Your message is on its way to me. I’ll read it properly and reply to <span data-thanks-email>your inbox</span> soon.</p>
+      <p class="c-thanks__note">In the meantime, have a look through the <a href="/#work">selected work</a> or say hi on <a href="https://www.instagram.com/autumnleafdesign/" target="_blank" rel="noopener">Instagram</a>.</p>
+      <button class="pill" type="button" data-thanks-reset>Send another message <span class="arrow">→</span></button>
+    </div>
     <dl class="c-aside" data-fade>
       <div><dt class="label">Email</dt><dd><a href="mailto:${EMAIL}">${EMAIL}</a></dd></div>
       <div><dt class="label">Based in</dt><dd>Johannesburg, South Africa</dd></div>

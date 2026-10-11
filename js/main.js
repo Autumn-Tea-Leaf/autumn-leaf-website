@@ -572,10 +572,32 @@
       input.setAttribute("aria-invalid", msg ? "true" : "false");
       if (err) err.textContent = msg || "";
     };
-    // Arriving back after a no-JavaScript submission
-    if (new URLSearchParams(location.search).get("sent") === "1") {
-      status.textContent = "Thanks, your message has been sent. I’ll be in touch soon.";
+    const thanks = $("[data-thanks]");
+    const showThanks = (name, email) => {
+      if (!thanks) { status.textContent = "Thanks, your message has been sent. I’ll be in touch soon."; return; }
+      $("[data-thanks-name]", thanks).textContent = name ? `, ${name.split(" ")[0]}` : "";
+      $("[data-thanks-email]", thanks).textContent = email || "your inbox";
+      form.hidden = true;
+      thanks.hidden = false;
+      thanks.focus({ preventScroll: true });
+      if (lenis) lenis.scrollTo(thanks, { offset: -120, duration: 1.2 });
+      if (!reduce) {
+        gsap.fromTo(thanks, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 1.2 });
+        gsap.fromTo($(".c-thanks__cn", thanks), { clipPath: "inset(0 0 100% 0)" }, { clipPath: "inset(0 0 0% 0)", duration: 1.6, delay: 0.2, ease: "expo.inOut" });
+      }
+    };
+    if (thanks) {
+      $("[data-thanks-reset]", thanks).addEventListener("click", () => {
+        thanks.hidden = true;
+        form.hidden = false;
+        status.textContent = "";
+        btnText.textContent = "Send message";
+        btn.disabled = false;
+        form.elements.name.focus();
+      });
     }
+    // Arriving back after a no-JavaScript submission
+    if (new URLSearchParams(location.search).get("sent") === "1") showThanks("", "");
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
       const name = form.elements.name.value.trim();
@@ -594,6 +616,7 @@
       btn.setAttribute("aria-busy", "true");
       btnText.textContent = "Sending…";
       status.textContent = "";
+      status.classList.remove("form-status--error");
       try {
         const res = await fetch(form.dataset.endpoint, {
           method: "POST",
@@ -613,13 +636,23 @@
         if (!res.ok || data.success === false || data.success === "false") throw new Error(data.message || res.status);
         form.reset();
         form.querySelector('input[name="type"]').checked = true;
-        btnText.textContent = "Sent";
-        status.textContent = "Thanks, your message has been sent. I’ll be in touch soon.";
-        setTimeout(() => { btnText.textContent = "Send message"; btn.disabled = false; }, 4000);
+        showThanks(name, email);
       } catch (err) {
+        console.warn("Contact form error:", err && err.message);
         btnText.textContent = "Send message";
         btn.disabled = false;
-        status.innerHTML = 'Sorry, that didn’t send. Please try again, or email <a href="mailto:autumnleafdesignstudio@gmail.com">autumnleafdesignstudio@gmail.com</a>.';
+        const wa = form.dataset.whatsapp;
+        const text = `Hi Andy, I’m ${name} (${email}). I’m interested in: ${type}.
+
+${message}`;
+        const link = document.createElement("a");
+        link.href = `https://wa.me/${wa}?text=${encodeURIComponent(text)}`;
+        link.target = "_blank";
+        link.rel = "noopener";
+        link.textContent = `send me a WhatsApp on ${form.dataset.whatsappDisplay}`;
+        status.classList.add("form-status--error");
+        status.textContent = "Sorry, that didn’t send. Please ";
+        status.append(link, " instead. Your message will be filled in for you.");
       } finally {
         btn.removeAttribute("aria-busy");
       }
