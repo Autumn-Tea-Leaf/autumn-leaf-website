@@ -379,10 +379,12 @@
       });
     });
     // Frames that open up as they enter
+    // Played once on entry (not scrubbed) and then cleared, so the frame isn't repainted every scroll frame.
     $$("[data-clip]").forEach((el) => {
       gsap.fromTo(el, { clipPath: "inset(12% 8% 12% 8%)" }, {
-        clipPath: "inset(0% 0% 0% 0%)", ease: "none",
-        scrollTrigger: { trigger: el, start: "top bottom", end: "top 35%", scrub: true },
+        clipPath: "inset(0% 0% 0% 0%)", duration: 1.6, ease: "expo.out",
+        scrollTrigger: { trigger: el, start: "top 90%", once: true },
+        onComplete: () => gsap.set(el, { clearProps: "clipPath" }),
       });
     });
   }
@@ -545,8 +547,13 @@
         if (velocity) dir = velocity > 0 ? 1 : -1;
         boost = Math.min(Math.abs(velocity) * 0.35, 14);
       });
+      // Measure once (and on resize) rather than every frame, and only run while on screen.
+      let w = group.offsetWidth;
+      window.addEventListener("resize", () => { w = group.offsetWidth; });
+      let visible = false;
+      new IntersectionObserver(([e]) => { visible = e.isIntersecting; }).observe(mq);
       gsap.ticker.add(() => {
-        const w = group.offsetWidth;
+        if (!visible) return;
         x -= (base + boost) * dir;
         boost *= 0.92;
         if (x <= -w) x += w;
@@ -664,22 +671,6 @@
         else if (m.on) { m.on = false; gsap.to(m.el, { x: 0, y: 0, duration: 1, ease: "elastic.out(1, 0.45)", overwrite: "auto" }); }
       });
     }, { passive: true });
-  }
-
-  /* ---------- Scroll skew ---------- */
-  // Images lean very slightly with scroll speed and settle when scrolling stops.
-  function initSkew() {
-    if (reduce || !lenis || !finePointer) return;
-    const els = $$(".card__frame, .p-gallery figure, .about__frame");
-    if (!els.length) return;
-    const setters = els.map((el) => gsap.quickTo(el, "skewY", { duration: 0.7, ease: "power3" }));
-    let settle;
-    lenis.on("scroll", ({ velocity }) => {
-      const deg = gsap.utils.clamp(-2.5, 2.5, -velocity * 0.09);
-      setters.forEach((s) => s(deg));
-      clearTimeout(settle);
-      settle = setTimeout(() => setters.forEach((s) => s(0)), 120);
-    });
   }
 
   /* ---------- Footer parallax ---------- */
@@ -882,7 +873,6 @@ ${message}`;
     initIndex();
     initCursor();
     initMagnetic();
-    initSkew();
     initFooter();
     initVideos();
     initContactForm();
