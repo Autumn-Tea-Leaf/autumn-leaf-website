@@ -156,6 +156,137 @@ const PROJECTS = [
     ],
   },
   {
+    slug: "moon-son",
+    title: "Moon + Son",
+    kind: "Wool & crochet store",
+    year: 2024,
+    disciplines: ["Web design", "Illustration"],
+    cats: ["digital", "image"],
+    intro: "A landing page for Moon + Son, a wool and crochet store in Craighall Park. The line: patch it up with us.",
+    body: "Soft greys and a warm yarn yellow carry the store’s logo through the whole page. A single strand of yarn winds from section to section, past balls of wool, a patchwork cat in a knitted scarf, a quilted doll and other hand-drawn crochet characters, ending at the shop’s location and a Join Us call to action.",
+    cover: { type: "image", src: "assets/work/moon-son/cover.webp", alt: "Moon + Son illustrations: a patchwork cat, a quilted doll and a knitted figure" },
+    coverFit: "contain",
+    thumb: "assets/work/moon-son/cover.webp",
+    gallery: [
+      img("moon-son/01", "Moon + Son landing page design"),
+      img("moon-son/02", "Moon + Son logo"),
+      img("moon-son/03", "Patchwork cat in a knitted scarf"),
+      img("moon-son/04", "Quilted doll"),
+      img("moon-son/05", "Knitted figure"),
+      img("moon-son/06", "Knitted heart"),
+      img("moon-son/07", "Ball of wool"),
+    ],
+  },
+  {
+    slug: "comic-con",
+    title: "Comic Con Johannesburg",
+    kind: "Event campaign",
+    year: 2023,
+    disciplines: ["Campaign", "Pixel art", "Social media"],
+    cats: ["branding", "digital"],
+    award: "3rd place, Comic Con Africa design competition",
+    coverFit: "contain",
+    coverBg: "#000",
+    intro: "A retro arcade campaign for Comic Con Johannesburg, which placed third in the Comic Con Africa design competition.",
+    body: "Five pixel characters, a cat, a ghost, a TV, a game console and an alien, lead the whole campaign. Each one fronts a different part of the show (comics, cosplay, anime and K-pop, gaming, TV and movies) and appears across an Instagram series, a ticket, QR codes, stickers, an arcade cabinet and a digital leaderboard. The message to every visitor: begin quest.",
+    cover: { type: "image", src: "assets/work/comic-con/cover.webp", alt: "Comic Con Johannesburg logo with five pixel-art characters on black" },
+    thumb: "assets/work/comic-con/02.webp",
+    gallery: [
+      img("comic-con/01", "Comic Con Instagram campaign mockup"),
+      img("comic-con/06", "Comic Con Spring 2023 ticket"),
+      img("comic-con/04", "Comic Con arcade cabinet"),
+      img("comic-con/05", "Digital leaderboard on a street display"),
+      img("comic-con/08", "Sub-brand logos for comics, cosplay, and anime and K-pop"),
+      img("comic-con/07", "The five pixel characters as stickers"),
+      img("comic-con/09", "QR codes with a character in each"),
+      img("comic-con/03", "We look forward to seeing you"),
+    ],
+  },
+  {
+    slug: "skuno",
+    title: "Skuno",
+    kind: "Brand collaboration concept",
+    year: 2024,
+    disciplines: ["Packaging", "Concept"],
+    cats: ["branding"],
+    intro: "Skuno imagines UNO and Skittles as one deck: a card game that tastes the rainbow.",
+    body: "The wordmark folds the two names together, and a single strip of the Skittles rainbow drips from the N. Everything else is pared back to charcoal cards with coral corners and bold numerals, so the colour belongs to the brand moment rather than the noise.",
+    cover: img("skuno/01", "Skuno card box, open, with the Skittles logo"),
+    thumb: "assets/work/skuno/01.webp",
+    gallery: [
+      img("skuno/02", "Skuno card back and a coral number 2 card"),
+    ],
+  },
+  {
+    slug: "mr-d",
+    title: "Mr D",
+    kind: "App redesign",
+    year: 2023,
+    disciplines: ["UX/UI", "App design", "UX research"],
+    cats: ["digital"],
+    credits: "Andy Ou, Tatyana Banda",
+    tools: "Figma",
+    intro: "Food without frustration: a redesign of the Mr D delivery app that makes ordering easier for everyone, including people over 55.",
+    body: "We reviewed the app against Nielsen’s ten usability heuristics, built personas and ran usability tests. The redesign answers what we found. A calmer home screen leads with Your Recently Purchased and Discover Foods Weekly, cuisines filter restaurants in one tap, and Hot Deals keeps specials easy to find. Paying works with a saved card and its CVV instead of an OTP, a 24/7 Help Bot answers questions about food or the app, and the whole interface switches language, defaulting to the phone’s own.",
+    cover: img("mr-d/cover", "Redesigned Mr D app on two phones"),
+    coverFit: "contain",
+    thumb: "assets/work/mr-d/cover.webp",
+    gallery: [
+      img("mr-d/02", "Ordering flow: home, Discover Foods Weekly, restaurant favourites, customising a pizza and paying with CVV"),
+      img("mr-d/03", "Filtering flow: cuisines, chicken restaurants and specials"),
+      img("mr-d/04", "Recently purchased, the Help Bot, and the language switch shown in English and Chinese"),
+      img("mr-d/01", "Hand-drawn wireframes and user flow"),
+    ],
+  },
+  {
+    slug: "durex",
+    title: "Sex Uncensored",
+    kind: "Durex × Sexpo campaign",
+    year: 2024,
+    disciplines: ["Campaign", "Motion", "Art direction"],
+    cats: ["branding", "motion"],
+    credits: "Andy Ou, Selina Moyana, Olwethu Nkazi Sukazi, Stuart Tanner",
+    tools: "After Effects, Photoshop, Illustrator",
+    intro: "A Durex and Sexpo campaign that sets out to make sex feel less like a taboo and more like a conversation.",
+    body: "Our research looked at the physical and functional barriers that stop people living freely: cultural taboos, shame, a lack of sex education, poor communication, and the way people with disabilities are often treated as if they have no sexuality at all. Sex Uncensored answers with humour and openness. A short ad tells viewers to pull the norm and find sexual freedom at the Sexpo, while the wider campaign adds a public sculpture built from personalised condom wrappers, QR posters that lead to a microsite, a magazine on sexual identity and a limited edition condom.",
+    cover: { type: "video", src: "assets/work/durex/loop.mp4", poster: "assets/work/durex/loop-poster.webp", alt: "Sex Uncensored ad: pull the norm, sexual freedom at the Sexpo" },
+    thumb: "assets/work/durex/loop-poster.webp",
+    gallery: [
+      { type: "film", src: "assets/work/durex/ad.mp4", poster: "assets/work/durex/ad-poster.webp", alt: "Sex Uncensored, the full ad with sound" },
+      img("durex/01", "Sex Uncensored brag board: magazine, packaging, posters and billboard"),
+      { type: "film", src: "assets/work/durex/ad-instagram.mp4", poster: "assets/work/durex/ad-instagram-poster.webp", alt: "Sex Uncensored, Instagram cut" },
+      img("durex/02", "Coming Together mood board"),
+      img("durex/03", "Lingo Love illustration of reaching hands and hearts"),
+      img("durex/04", "Billboard sketch: The Great South African Coming Together"),
+      img("durex/05", "Explainer video frame"),
+      img("durex/06", "Gen-Z poster sketch"),
+    ],
+  },
+  {
+    slug: "netflix-together",
+    title: "Netflix Together",
+    kind: "Feature concept",
+    year: 2024,
+    disciplines: ["UX/UI", "Campaign", "Concept"],
+    cats: ["digital"],
+    tools: "Illustrator, Photoshop",
+    intro: "A watch party built into Netflix: stream the same show with people on their own accounts, and when anyone pauses, it pauses for everyone.",
+    body: "It started with “Netflix cheating”, watching ahead of a partner after agreeing to watch together, which half of people in relationships admit to. Netflix Together adds a Together tab to the TV app. Lock the shows and movies you want to watch as a pair, invite friends with a code, and keep it shut with a passcode so nobody skips ahead. The line: experience Netflix differently.",
+    cover: img("netflix-together/cover", "Netflix Together on a TV: experience Netflix differently"),
+    coverFit: "contain",
+    coverBg: "#f3c4ee",
+    thumb: "assets/work/netflix-together/cover.webp",
+    gallery: [
+      img("netflix-together/01", "Netflix Together intro screen"),
+      img("netflix-together/02", "Watch together no matter where you are"),
+      img("netflix-together/03", "Lock shows or movies you want to watch together"),
+      img("netflix-together/04", "Invite friends with a code"),
+      img("netflix-together/05", "Entering an invite code"),
+      img("netflix-together/06", "Passcode to unlock a shared title"),
+      img("netflix-together/07", "My List with locked shared titles"),
+    ],
+  },
+  {
     slug: "discord-ad",
     title: "Discord Ad",
     kind: "Animated spot",
@@ -257,6 +388,39 @@ const PROJECTS = [
       { type: "embed", src: "https://www-ccv.adobe.io/v1/player/ccv/LUkRcA5C8PS/embed?api_key=behance1&bgcolor=%23191919", alt: "Vega animation" },
       img("vega/01", "Vega objective, big idea and solution"),
       img("vega/02", "Vega storyboard and character design"),
+    ],
+  },
+  {
+    slug: "brand-playbook",
+    title: "Brand Playbook",
+    titleCn: "秋叶",
+    kind: "Brand identity playbook",
+    year: 2024,
+    disciplines: ["Brand identity", "Brand strategy"],
+    cats: ["branding"],
+    intro: "The brand identity playbook behind Autumn Leaf: timeless simplicity, inspired by the quiet elegance of Chinese vases and pottery.",
+    body: "It sets out the manifesto, mission and vision, a user persona, the positioning statement and brand promise, the customer journey and the tone of voice, then a full style guide: the logo, the slate, mist and gold palette, Montserrat and Courier New, icons, collateral mockups, 3D models of an exhibition stand and an animated logo.",
+    cover: img("playbook/01", "Autumn Leaf Brand Identity Playbook cover"),
+    thumb: "assets/work/playbook/01.webp",
+    gallery: [
+      img("playbook/02", "Autumn Leaf Brand Identity Playbook, page 2"),
+      img("playbook/03", "Autumn Leaf Brand Identity Playbook, page 3"),
+      img("playbook/04", "Autumn Leaf Brand Identity Playbook, page 4"),
+      img("playbook/05", "Autumn Leaf Brand Identity Playbook, page 5"),
+      img("playbook/06", "Autumn Leaf Brand Identity Playbook, page 6"),
+      img("playbook/07", "Autumn Leaf Brand Identity Playbook, page 7"),
+      img("playbook/08", "Autumn Leaf Brand Identity Playbook, page 8"),
+      img("playbook/09", "Autumn Leaf Brand Identity Playbook, page 9"),
+      img("playbook/10", "Autumn Leaf Brand Identity Playbook, page 10"),
+      img("playbook/11", "Autumn Leaf Brand Identity Playbook, page 11"),
+      img("playbook/12", "Autumn Leaf Brand Identity Playbook, page 12"),
+      img("playbook/13", "Autumn Leaf Brand Identity Playbook, page 13"),
+      img("playbook/14", "Autumn Leaf Brand Identity Playbook, page 14"),
+      img("playbook/15", "Autumn Leaf Brand Identity Playbook, page 15"),
+      img("playbook/16", "Autumn Leaf Brand Identity Playbook, page 16"),
+      img("playbook/17", "Autumn Leaf Brand Identity Playbook, page 17"),
+      img("playbook/18", "Autumn Leaf Brand Identity Playbook, page 18"),
+      { type: "video", src: "assets/brand/logo-animation.mp4", poster: "assets/brand/logo-animation-poster.webp", alt: "Autumn Leaf animated logo" },
     ],
   },
   {
@@ -620,13 +784,14 @@ ${scripts(base)}
 function projectPage(p, i) {
   const base = "../";
   const next = PROJECTS[(i + 1) % PROJECTS.length];
-  const coverStyle = [p.coverPosition ? `object-position:${p.coverPosition}` : "", p.coverFit ? `object-fit:${p.coverFit};background:var(--c-white)` : ""].filter(Boolean).join(";");
+  const coverStyle = [p.coverPosition ? `object-position:${p.coverPosition}` : "", p.coverFit ? `object-fit:${p.coverFit};background:${p.coverBg || "var(--c-white)"};inset:0;height:100%` : ""].filter(Boolean).join(";");
   const meta = [
     ["Year", p.year],
     ["Discipline", p.disciplines.join(", ")],
     ["Type", p.kind],
     p.credits ? ["Credits", p.credits] : null,
     p.tools ? ["Tools", p.tools] : null,
+    p.award ? ["Recognition", p.award] : null,
     p.client ? ["Client", p.client] : null,
     p.live ? ["Live site", `<a href="${p.live}" target="_blank" rel="noopener">${p.live.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "")} ↗</a>`] : null,
     p.behance ? ["Behance", `<a href="${p.behance}" target="_blank" rel="noopener">View the case study ↗</a>`] : null,
@@ -637,7 +802,8 @@ function projectPage(p, i) {
       return `<figure class="is-embed" data-fade><iframe src="${m.src}" title="${esc(m.alt)}" loading="lazy" allow="autoplay; fullscreen" allowfullscreen></iframe></figure>`;
     }
     if (m.type === "film") {
-      return `<figure data-fade><video src="${base}${m.src}" poster="${base}${m.poster}"${wh(m.src)} controls playsinline preload="metadata" aria-label="${esc(m.alt)}"></video></figure>`;
+      const fd = dims[m.src];
+      return `<figure${fd && fd[1] > fd[0] ? ' class="is-portrait"' : ""} data-fade><video src="${base}${m.src}" poster="${base}${m.poster}"${wh(m.src)} controls playsinline preload="metadata" aria-label="${esc(m.alt)}"></video></figure>`;
     }
     const d = dims[m.src];
     const portrait = d && d[1] > d[0] && d[1] / d[0] < 2;
@@ -668,12 +834,12 @@ ${header(base, "work")}
       </dl>
     </div>
   </section>
-  <div class="p-cover">${media(p.cover, base, { parallax: 10, eager: true, style: coverStyle })}</div>
+  <div class="p-cover"${p.coverBg ? ` style="background:${p.coverBg}"` : ""}>${media(p.cover, base, { parallax: p.coverFit ? 0 : 10, eager: true, style: coverStyle })}</div>
   <section class="p-gallery" aria-label="Project images">
     ${gallery}
     <div class="p-gallery__note label">
       <span>${esc(p.title)}, ${p.year}</span>
-      ${(() => { const [href, text] = p.live ? [p.live, "Visit the live site ↗"] : [p.behance, "Full case study on Behance ↗"]; return `<a class="link-roll" href="${href}" target="_blank" rel="noopener"><span>${text}</span><span aria-hidden="true">${text}</span></a>`; })()}
+      ${(() => { if (!p.live && !p.behance) return ""; const [href, text] = p.live ? [p.live, "Visit the live site ↗"] : [p.behance, "Full case study on Behance ↗"]; return `<a class="link-roll" href="${href}" target="_blank" rel="noopener"><span>${text}</span><span aria-hidden="true">${text}</span></a>`; })()}
     </div>
   </section>
   <a class="p-next" href="/work/${next.slug}" data-cursor="Next">

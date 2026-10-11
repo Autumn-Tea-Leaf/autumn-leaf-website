@@ -15,8 +15,6 @@
   --c-ink: #24303a;
   --c-ink-soft: #495057;
   --c-slate-deep: #3b4b57;
-  /* Cobalt sampled from the hero porcelain pattern */
-  --c-cobalt: #2a4ba8;
   --c-line: rgba(36, 48, 58, 0.14);
   --c-line-light: rgba(255, 255, 255, 0.22);
 
@@ -312,7 +310,7 @@ html.lenis, html.lenis body { height: auto; }
   transform: translate(-50%, -50%);
   writing-mode: vertical-rl;
   font-size: clamp(5rem, 11vw, 12rem);
-  color: var(--c-cobalt);
+  color: var(--c-slate);
   pointer-events: none;
   will-change: transform;
   text-shadow: 0 0 24px var(--c-white), 0 0 8px var(--c-white);
