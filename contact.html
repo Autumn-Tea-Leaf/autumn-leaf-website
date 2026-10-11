@@ -3,6 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-lrKu7fHsKxHvsZmsg/i5sWvy8O7evH8zhZKHTv0k4B0='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; media-src 'self'; connect-src 'self' https://formsubmit.co; form-action https://formsubmit.co; frame-src https://www-ccv.adobe.io https://www.behance.net; object-src 'none'; base-uri 'self'; upgrade-insecure-requests">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <title>Contact | Autumn Leaf</title>
 <meta name="description" content="Start a project with Autumn Leaf. Brand identity, packaging, websites and motion by Andy Ou, Johannesburg.">
 <meta name="theme-color" content="#e8ebee">
@@ -66,9 +68,11 @@
     <form class="c-form" data-contact-form data-whatsapp="27614420425" data-whatsapp-display="061 442 0425" novalidate method="POST" action="https://formsubmit.co/autumnleafdesignstudio@gmail.com" data-endpoint="https://formsubmit.co/ajax/autumnleafdesignstudio@gmail.com">
       <input type="hidden" name="_subject" value="New enquiry from autumnleafdesigns.co.za">
       <input type="hidden" name="_template" value="table">
-      <input type="hidden" name="_captcha" value="false">
+      <input type="hidden" name="_captcha" value="true">
+      <input type="hidden" name="_blacklist" value="backlinks, guest post, casino, viagra, cialis, crypto, bitcoin, forex, loan offer, escort, porn, web traffic, first page of google, link building, whatsapp marketing">
       <input type="hidden" name="_next" value="https://autumnleafdesigns.co.za/contact?sent=1">
       <input type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
+      <div aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden"><label for="f-fax">Contact me by fax only</label><input type="checkbox" id="f-fax" name="fax_only" value="1" tabindex="-1"></div>
       <div class="field">
         <span class="label">I’m interested in</span>
         <div class="chips">

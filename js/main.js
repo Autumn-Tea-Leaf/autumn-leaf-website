@@ -645,6 +645,10 @@
       const chip = [...form.querySelectorAll('input[name="type"]')].find((r) => r.value.toLowerCase().replace(/\s+/g, "-") === pre);
       if (chip) chip.checked = true;
     }
+    // Real people type or click before sending; most bots fill values directly.
+    const openedAt = Date.now();
+    let interacted = false;
+    ["keydown", "pointerdown", "input", "paste"].forEach((ev) => form.addEventListener(ev, () => (interacted = true), { passive: true }));
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
       const name = form.elements.name.value.trim();
@@ -663,7 +667,25 @@
       if (form.elements.phone) { setErr("phone", phoneOk ? "" : "Please check the number (digits only)."); ok = ok && phoneOk; }
       const phone = phoneRaw && phoneOk ? `+${dial} ${digits}` : "";
       if (!ok) { status.textContent = ""; return; }
-      if (form.elements._honey && form.elements._honey.value) return; // bot
+
+      // Spam checks. Bots get a normal-looking thank-you and nothing is sent.
+      const trapped = (form.elements._honey && form.elements._honey.value) || (form.elements.fax_only && form.elements.fax_only.checked);
+      const tooFast = Date.now() - openedAt < 3000;
+      if (trapped || tooFast || !interacted) { form.reset(); showThanks(name, email); return; }
+      if ((message.match(/https?:\/\/|www\./gi) || []).length > 3) {
+        setErr("message", "Please keep links to three or fewer, or describe the project in words.");
+        return;
+      }
+      const now = Date.now();
+      let sent = [];
+      try { sent = JSON.parse(localStorage.getItem("al-sent") || "[]").filter((t) => now - t < 864e5); } catch (err) {}
+      if (sent.some((t) => now - t < 6e4) || sent.length >= 5) {
+        status.classList.add("form-status--error");
+        status.textContent = sent.length >= 5
+          ? "You’ve sent a few messages today. I’ll reply to those first, or reach me on WhatsApp."
+          : "Thanks, I’ve got your last message. Please wait a minute before sending another.";
+        return;
+      }
 
       btn.disabled = true;
       btn.setAttribute("aria-busy", "true");
@@ -678,6 +700,7 @@
             _subject: `${type} enquiry from ${name}`,
             _template: "table",
             _captcha: "false",
+            _blacklist: form.elements._blacklist ? form.elements._blacklist.value : "",
             _replyto: email,
             Name: name,
             Email: email,
@@ -688,6 +711,7 @@
         });
         const data = await res.json().catch(() => ({}));
         if (!res.ok || data.success === false || data.success === "false") throw new Error(data.message || res.status);
+        try { localStorage.setItem("al-sent", JSON.stringify([...sent, now])); } catch (err) {}
         form.reset();
         form.querySelector('input[name="type"]').checked = true;
         showThanks(name, email);

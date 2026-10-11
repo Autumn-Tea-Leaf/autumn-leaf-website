@@ -4,12 +4,15 @@
 // No dependencies. Output is plain HTML that GitHub Pages can serve as-is.
 
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
+import { createHash } from "node:crypto";
 import { COUNTRIES } from "./countries.mjs";
 
 const SITE = "https://autumnleafdesigns.co.za";
 const EMAIL = "autumnleafdesignstudio@gmail.com";
 // Contact form submissions are emailed here through FormSubmit (formsubmit.co).
 const FORM_TO = "autumnleafdesignstudio@gmail.com";
+// FormSubmit drops messages containing any of these (comma separated). Keep "SEO" and "ads" out: real clients mention them.
+const SPAM_PHRASES = "backlinks, guest post, casino, viagra, cialis, crypto, bitcoin, forex, loan offer, escort, porn, web traffic, first page of google, link building, whatsapp marketing";
 // WhatsApp fallback shown if the form can't send (international format, no +).
 const WHATSAPP = "27614420425";
 const WHATSAPP_DISPLAY = "061 442 0425";
@@ -499,6 +502,29 @@ function media(m, base, { parallax = 0, eager = false, style = "" } = {}) {
   return `<img${px}${st} src="${base}${m.src}"${wh(m.src)} alt="${esc(m.alt)}" loading="${eager ? "eager" : "lazy"}" decoding="async">`;
 }
 
+/* ---------------- security ---------------- */
+// Tiny inline boot script; its hash is allowed by the CSP below, so no other inline script can run.
+const BOOT_JS = `
+  document.documentElement.classList.add("js");
+  setTimeout(function () { if (!window.__alBooted) document.documentElement.classList.remove("js"); }, 5000);
+`;
+// Content Security Policy: only this site's own scripts run, the form can only post to FormSubmit,
+// and the only embedded frame allowed is the Behance/Adobe video player.
+const CSP = [
+  "default-src 'self'",
+  `script-src 'self' 'sha256-${createHash("sha256").update(BOOT_JS).digest("base64")}'`,
+  "style-src 'self' 'unsafe-inline'",
+  "img-src 'self' data:",
+  "font-src 'self'",
+  "media-src 'self'",
+  "connect-src 'self' https://formsubmit.co",
+  "form-action https://formsubmit.co",
+  "frame-src https://www-ccv.adobe.io https://www.behance.net",
+  "object-src 'none'",
+  "base-uri 'self'",
+  "upgrade-insecure-requests",
+].join("; ");
+
 /* ---------------- shared chrome ---------------- */
 function head({ title, desc, base, path, image = "assets/brand/og.jpg" }) {
   return `<!DOCTYPE html>
@@ -506,6 +532,8 @@ function head({ title, desc, base, path, image = "assets/brand/og.jpg" }) {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="${CSP}">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(desc)}">
 <meta name="theme-color" content="#e8ebee">
@@ -523,10 +551,7 @@ function head({ title, desc, base, path, image = "assets/brand/og.jpg" }) {
 <link rel="preload" href="${base}assets/fonts/montserrat-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="${base}assets/fonts/fonts.css">
 <link rel="stylesheet" href="${base}css/main.css">
-<script>
-  document.documentElement.classList.add("js");
-  setTimeout(function () { if (!window.__alBooted) document.documentElement.classList.remove("js"); }, 5000);
-</script>
+<script>${BOOT_JS}</script>
 </head>`;
 }
 
@@ -926,9 +951,11 @@ ${header(base, "contact")}
     <form class="c-form" data-contact-form data-whatsapp="${WHATSAPP}" data-whatsapp-display="${WHATSAPP_DISPLAY}" novalidate method="POST" action="https://formsubmit.co/${FORM_TO}" data-endpoint="https://formsubmit.co/ajax/${FORM_TO}">
       <input type="hidden" name="_subject" value="New enquiry from autumnleafdesigns.co.za">
       <input type="hidden" name="_template" value="table">
-      <input type="hidden" name="_captcha" value="false">
+      <input type="hidden" name="_captcha" value="true">
+      <input type="hidden" name="_blacklist" value="${SPAM_PHRASES}">
       <input type="hidden" name="_next" value="${SITE}/contact?sent=1">
       <input type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
+      <div aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden"><label for="f-fax">Contact me by fax only</label><input type="checkbox" id="f-fax" name="fax_only" value="1" tabindex="-1"></div>
       <div class="field">
         <span class="label">I’m interested in</span>
         <div class="chips">
@@ -994,7 +1021,7 @@ function privacyPage() {
   const sections = [
     ["Who I am", `This site belongs to Andy Ou, trading as Autumn Leaf Design Studio, based in Johannesburg, South Africa. For anything about your personal information, email <a href="mailto:${EMAIL}">${EMAIL}</a>.`],
     ["What this site collects", "Nothing in the background. There are no cookies, no analytics and no advertising trackers. Fonts and scripts are served from this site rather than from outside services. Like every website, the hosting provider (GitHub Pages) briefly logs technical details such as IP addresses to keep the service secure."],
-    ["Browser storage", "The site saves one small note in your browser so the intro animation only plays once per visit. It is not a cookie, it is never sent anywhere, and it clears itself when you close the tab."],
+    ["Browser storage", "The site saves one small note in your browser so the intro animation only plays once per visit. It is not a cookie, it is never sent anywhere, and it clears itself when you close the tab. If you send the contact form, your browser also keeps the times of your last few messages for a day, to stop spam floods. That note holds no names or messages and is never sent anywhere."],
     ["The contact form", "When you send the contact form, your name, email address, phone number (if you add one), the type of project and your message are emailed to me through FormSubmit (formsubmit.co), a service that forwards form messages to my inbox. Nothing is stored on this site itself."],
     ["When you email me", "I receive your name, email address and whatever you choose to write. I use it only to reply and to work with you on your project. I never sell it or share it for marketing. I keep our emails for as long as we are working together and afterwards only as long as I need them for my records, and I will delete them sooner if you ask."],
     ["Third-party content", "The Vega project page includes a video player from Adobe (Behance), which may set its own cookies when it loads. Links to Behance, LinkedIn and Instagram take you to sites with their own privacy policies."],
