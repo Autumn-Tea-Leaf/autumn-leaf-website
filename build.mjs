@@ -510,7 +510,7 @@ const BOOT_JS = `
   (function () {
     var t = null;
     try { t = localStorage.getItem("al-theme"); } catch (e) {}
-    if (t !== "dark" && t !== "light") t = window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    if (t !== "dark") t = "light"; // light by default; dark only when the visitor picks it
     document.documentElement.setAttribute("data-theme", t);
   })();
   setTimeout(function () { if (!window.__alBooted) document.documentElement.classList.remove("js"); }, 5000);
@@ -544,8 +544,7 @@ function head({ title, desc, base, path, image = "assets/brand/og.jpg" }) {
 <link rel="preload" href="/assets/brand/ink-blot.png" as="image" type="image/png">` : ""}
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(desc)}">
-<meta name="theme-color" content="#e8ebee" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#121920" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#e8ebee">
 <link rel="canonical" href="${SITE}/${path}">
 <meta property="og:type" content="website">
 <meta property="og:title" content="${esc(title)}">

@@ -174,13 +174,6 @@
       try { localStorage.setItem("al-theme", next); } catch (e) {}
       sync();
     }));
-    // Follow the system setting until the visitor picks one themselves
-    const mq = window.matchMedia("(prefers-color-scheme: dark)");
-    if (mq.addEventListener) mq.addEventListener("change", (e) => {
-      let saved = null;
-      try { saved = localStorage.getItem("al-theme"); } catch (err) {}
-      if (!saved) { doc.setAttribute("data-theme", e.matches ? "dark" : "light"); sync(); }
-    });
     sync();
   }
 
